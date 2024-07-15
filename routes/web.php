@@ -6,6 +6,8 @@ use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\HotelController;
 use App\Http\Controllers\Backend\RekeningController;
 use App\Http\Controllers\Backend\RoomController;
+use App\Http\Controllers\Backend\BookingController;
+use App\Http\Controllers\Backend\BookingDetailController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('hotel', HotelController::class); //hotel
     Route::resource('room', RoomController::class); //room
     Route::resource('rekening', RekeningController::class); //rekening
+    Route::resource('booking', BookingController::class); //booking
+    Route::resource('bookingdetail', BookingDetailController::class); //booking detail
 });
 
 require __DIR__ . '/auth.php';

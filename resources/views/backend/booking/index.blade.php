@@ -6,13 +6,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Rekening</h1>
+                    <h1>Booking</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <!-- <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li> -->
                         {{-- <li class="breadcrumb-item"><a href="#">Layout</a></li> --}}
-                        <li class="breadcrumb-item active">Rekening</li>
+                        <li class="breadcrumb-item active">Booking</li>
                     </ol>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                         <div class="card-header">
                             <h3 class="card-title"> </h3>
                             <div class="card-tools">
-                                <a href="{{ route('rekening.create') }}" class="btn btn-primary btn-sm">
+                                <a href="{{ route('booking.create') }}" class="btn btn-primary btn-sm">
                                     <i class="fas fa-plus"></i> Add Data
                                 </a>
                             </div>
@@ -47,22 +47,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($datarekening as $rekening)
+                                    @foreach ($databooking as $booking)
                                     <tr>
                                         <td>
-                                            <a class="text-primary" href="{{ route('rekening.edit', $rekening->id_rekening) }}">
+                                            <a class="text-primary" href="{{ route('booking.edit', $booking->id_booking) }}">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
-                                            <a class="text-danger" href="{{ route('rekening.destroy', $rekening->id_rekening) }}" data-confirm-delete="true">
+                                            <a class="text-danger" href="{{ route('booking.destroy', $booking->id_booking) }}" data-confirm-delete="true">
                                                 <i class="fas fa-trash"></i> Delete
                                             </a>
                                         </td>
-                                        <td>{{ $rekening->booking_id }}</td>
-                                        <td>{{ $rekening->tgl_booking }}</td>
-                                        <td>{{ $rekening->agent->nama_agent }}</td>
-                                        <td>{{ $rekening->total_discount }}</td>
-                                        <td>{{ $rekening->total_subtotal }}</td>
-                                        <td>{{ $rekening->statusLabel }}</td>
+                                        <td>{{ $booking->booking_id }}</td>
+                                        <td>{{ $booking->tgl_booking }}</td>
+                                        <td>{{ $booking->agent->nama_agent }}</td>
+                                        <td>{{ $booking->total_discount }}</td>
+                                        <td>{{ $booking->total_subtotal }}</td>
+                                        <td>{{ $booking->statusLabel }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>
