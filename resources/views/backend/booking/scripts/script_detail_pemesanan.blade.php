@@ -67,14 +67,6 @@
 
                         $('#detailPesananTable tbody').append(newRow);
 
-                        // Update totals
-                        var totalDiscount = parseFloat($('#total_discount').val()) + parseFloat(response.data.discount);
-                        var totalSubtotal = parseFloat($('#total_subtotal').val()) + parseFloat(response.data.subtotal);
-
-                        $('#total_discount').val(totalDiscount.toFixed(2));
-                        $('#total_subtotal').val(totalSubtotal.toFixed(2));
-
-                        // Close the modal
                         $('#detailPemesananModal').modal('hide');
                         window.location.reload();
                         // Show success message
@@ -88,6 +80,7 @@
                 }
             });
         });
+        updateTotals();
 
         function updateTotals() {
             let totalDiscount = 0;
@@ -136,6 +129,7 @@
                                 'success'
                             );
                             $('a[data-id="' + id + '"]').closest('tr').remove(); // Remove the row
+                            window.location.reload();
                             updateTotals();
                         },
                         error: function(xhr) {

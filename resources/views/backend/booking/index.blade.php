@@ -50,19 +50,31 @@
                                     @foreach ($databooking as $booking)
                                     <tr>
                                         <td>
-                                            <a class="text-primary" href="{{ route('booking.edit', $booking->id_booking) }}">
+                                            <a class="btn btn-primary btn-sm" href="{{ route('booking.edit', $booking->id_booking) }}">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
-                                            <a class="text-danger" href="{{ route('booking.destroy', $booking->id_booking) }}" data-confirm-delete="true">
+                                            <a class="btn btn-danger btn-sm" href="{{ route('booking.destroy', $booking->id_booking) }}" data-confirm-delete="true">
                                                 <i class="fas fa-trash"></i> Delete
                                             </a>
                                         </td>
                                         <td>{{ $booking->booking_id }}</td>
-                                        <td>{{ $booking->tgl_booking }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($booking->tgl_booking)->format('d M Y') }}</td>
                                         <td>{{ $booking->agent->nama_agent }}</td>
                                         <td>{{ $booking->total_discount }}</td>
                                         <td>{{ $booking->total_subtotal }}</td>
-                                        <td>{{ $booking->statusLabel }}</td>
+                                        @php
+                                        $statusClasses = [
+                                        'Piutang' => 'btn btn-danger btn-sm',
+                                        'DP' => 'btn btn-warning btn-sm',
+                                        'Lunas' => 'btn btn-success btn-sm'
+                                        ];
+                                        $statusClass = $statusClasses[$booking->status] ?? 'btn btn-secondary btn-sm';
+                                        @endphp
+
+                                        <td>
+                                            <span class="{{ $statusClass }}">{{ $booking->status }}</span>
+                                        </td>
+
                                     </tr>
                                     @endforeach
                                 </tbody>

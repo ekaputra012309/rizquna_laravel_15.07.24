@@ -136,16 +136,9 @@
                                                         <td colspan="7" class="text-center">No data available in table</td>
                                                     </tr>
                                                     @else
-                                                    @php
-                                                    $total_discount = 0;
-                                                    $total_subtotal = 0;
-                                                    @endphp
 
                                                     @foreach ($booking_d as $detail)
-                                                    @php
-                                                    $total_discount += $detail->discount;
-                                                    $total_subtotal += $detail->subtotal;
-                                                    @endphp
+
                                                     <tr>
                                                         <td>
                                                             <a class="btn btn-danger btn-sm deleteBookingDetail" data-id="{{ $detail->id_booking_detail }}" href="#" data-confirm-delete="true">
@@ -165,8 +158,8 @@
                                                 <tfoot>
                                                     <tr>
                                                         <th colspan="5" style="text-align: right">Total</th>
-                                                        <th><input id="total_discount" name="total_discount" type="text" placeholder="0.00" class="form-control" value="{{ $total_discount ?? '0' }}" readonly></th>
-                                                        <th><input id="total_subtotal" name="total_subtotal" type="text" placeholder="0.00" class="form-control" value="{{ $total_subtotal ?? '0'}}" readonly></th>
+                                                        <th><input id="total_discount" name="total_discount" type="text" placeholder="0.00" class="form-control" readonly></th>
+                                                        <th><input id="total_subtotal" name="total_subtotal" type="text" placeholder="0.00" class="form-control" readonly></th>
                                                     </tr>
                                                 </tfoot>
                                             </table>

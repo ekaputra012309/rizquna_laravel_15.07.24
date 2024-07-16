@@ -92,7 +92,9 @@ class BookingController extends Controller
         $autoId = $newId . '/INV-HTL/' . $romanMonth . '/' . $currentYear;
         $agent = Agent::all();
         $hotel = Hotel::all();
-        $room = Room::all();
+        // $room = Room::all();
+        $bookedRoomIds = BookingDetail::where('booking_id', $autoId)->pluck('room_id');
+        $room = Room::whereNotIn('id_kamar', $bookedRoomIds)->get();
         $booking_d = BookingDetail::with('room', 'user')->where('booking_id', $autoId)->get();
         $data = array(
             'title' => 'Add Booking | ',
@@ -102,7 +104,30 @@ class BookingController extends Controller
             'dataroom' => $room,
             'booking_d' => $booking_d,
         );
+
         return view('backend.booking.create', $data);
+    }
+
+    public function edit(Booking $booking)
+    {
+        $booking->load('agent', 'hotel');
+        $autoId = $booking->booking_id;
+        $agent = Agent::all();
+        $hotel = Hotel::all();
+        // $room = Room::all();
+        $bookedRoomIds = BookingDetail::where('booking_id', $autoId)->pluck('room_id');
+        $room = Room::whereNotIn('id_kamar', $bookedRoomIds)->get();
+        $booking_d = BookingDetail::with('room', 'user')->where('booking_id', $autoId)->get();
+        $data = array(
+            'title' => 'Edit Booking | ',
+            'autoId' => $autoId,
+            'dataagent' => $agent,
+            'datahotel' => $hotel,
+            'dataroom' => $room,
+            'booking_d' => $booking_d,
+            'booking' => $booking,
+        );
+        return view('backend.booking.edit', $data);
     }
 
     public function notInPayment()
@@ -141,7 +166,9 @@ class BookingController extends Controller
         try {
             $booking = Booking::findOrFail($id);
             $booking->update($request->all());
-            return response()->json($booking, 200);
+            Alert::success('Success', 'booking updated successfully.');
+
+            return redirect()->route('booking.index');
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Booking not found'], 404);
         }
@@ -160,7 +187,9 @@ class BookingController extends Controller
             Payment::where('id_payment', $paymentId)->delete();
             // Delete the booking
             Booking::where('id_booking', $id)->delete();
-            return response()->json(null, 204);
+            Alert::success('Success', 'booking deleted successfully.');
+
+            return redirect()->route('booking.index');
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Booking Not Found'], 404);
         }

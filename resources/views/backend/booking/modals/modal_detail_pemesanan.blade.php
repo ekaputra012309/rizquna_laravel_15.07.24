@@ -44,7 +44,7 @@
                         </tbody>
                     </table>
                     <input type="hidden" id="booking_id" class="form-control" name="booking_id" value="{{ $autoId }}" readonly />
-                    <input type="hidden" id="malam1" name="malam">
+                    <input type="hidden" id="malam1" name="malam" value="{{ $booking->malam ?? ''}}">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
