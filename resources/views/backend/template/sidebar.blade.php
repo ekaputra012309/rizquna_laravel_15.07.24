@@ -31,7 +31,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-layer-group"></i>
                         <p>
                             Master Data
                             <i class="right fas fa-angle-left"></i>
@@ -71,23 +71,23 @@
 
                 <li class="nav-item">
                     <a href="{{ route('booking.index') }}" class="nav-link {{ request()->routeIs('booking.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <i class="nav-icon fas fa-hotel"></i>
                         <p>
                             Booking Hotels
                         </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('agent.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <a href="{{ route('payment.index') }}" class="nav-link {{ request()->routeIs('payment.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-credit-card"></i>
                         <p>
                             Payment Hotels
                         </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('agent.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                        <i class="nav-icon fab fa-cc-visa"></i>
                         <p>
                             Payment Visa
                         </p>
@@ -97,8 +97,8 @@
                 <li class="nav-header">Report</li>
 
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('agent.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-users"></i>
                         <p>
                             Report Agent
                         </p>
@@ -109,7 +109,7 @@
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-cogs"></i>
                         <p>
                             Konfigurasi
                             <i class="right fas fa-angle-left"></i>

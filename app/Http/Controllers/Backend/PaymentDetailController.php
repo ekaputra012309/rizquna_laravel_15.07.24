@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,14 +9,13 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PaymentDetailController extends Controller
 {
-    public function __construct()
+    public function index(Request $request)
     {
-        $this->middleware('auth:api');
-    }
+        $id_payment = $request->input('id_payment'); // Assuming you pass id_payment as a query parameter
+        $payments = PaymentDetail::with('payment')
+            ->where('id_payment', $id_payment) // Filter by id_payment
+            ->get();
 
-    public function index()
-    {
-        $payments = PaymentDetail::with('payment')->get();
         return response()->json($payments);
     }
 

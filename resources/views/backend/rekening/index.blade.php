@@ -47,19 +47,12 @@
                                     @foreach ($datarekening as $rekening)
                                     <tr>
                                         <td>
-                                            <div class="dropdown">
-                                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Actions
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item text-primary" href="{{ route('rekening.edit', $rekening->id_rekening) }}">
-                                                        <i class="fas fa-edit"></i> Edit
-                                                    </a>
-                                                    <a class="dropdown-item text-danger" href="{{ route('rekening.destroy', $rekening->id_rekening) }}" data-confirm-delete="true">
-                                                        <i class="fas fa-trash"></i> Delete
-                                                    </a>
-                                                </div>
-                                            </div>
+                                            <a class="btn btn-sm btn-primary" href="{{ route('rekening.edit', $rekening->id_rekening) }}">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+                                            <a class="btn btn-sm btn-danger" href="{{ route('rekening.destroy', $rekening->id_rekening) }}" data-confirm-delete="true">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </a>
                                         </td>
                                         <td>{{ $rekening->rekening_id }}</td>
                                         <td>{{ $rekening->no_rek }}</td>

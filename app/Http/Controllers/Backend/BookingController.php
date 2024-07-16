@@ -90,9 +90,8 @@ class BookingController extends Controller
 
         // Construct the auto ID with the Roman numeral month, year, and the new numeric part
         $autoId = $newId . '/INV-HTL/' . $romanMonth . '/' . $currentYear;
-        $agent = Agent::all();
-        $hotel = Hotel::all();
-        // $room = Room::all();
+        $agent = Agent::orderBy('nama_agent', 'asc')->get();
+        $hotel = Hotel::orderBy('nama_hotel', 'asc')->get();
         $bookedRoomIds = BookingDetail::where('booking_id', $autoId)->pluck('room_id');
         $room = Room::whereNotIn('id_kamar', $bookedRoomIds)->get();
         $booking_d = BookingDetail::with('room', 'user')->where('booking_id', $autoId)->get();
@@ -112,9 +111,8 @@ class BookingController extends Controller
     {
         $booking->load('agent', 'hotel');
         $autoId = $booking->booking_id;
-        $agent = Agent::all();
-        $hotel = Hotel::all();
-        // $room = Room::all();
+        $agent = Agent::orderBy('nama_agent', 'asc')->get();
+        $hotel = Hotel::orderBy('nama_hotel', 'asc')->get();
         $bookedRoomIds = BookingDetail::where('booking_id', $autoId)->pluck('room_id');
         $room = Room::whereNotIn('id_kamar', $bookedRoomIds)->get();
         $booking_d = BookingDetail::with('room', 'user')->where('booking_id', $autoId)->get();

@@ -58,7 +58,7 @@
                                             </a>
                                         </td>
                                         <td>{{ $booking->booking_id }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($booking->tgl_booking)->format('d M Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($booking->tgl_booking)->locale('id')->translatedFormat('d F Y') }}</td>
                                         <td>{{ $booking->agent->nama_agent }}</td>
                                         <td>{{ $booking->total_discount }}</td>
                                         <td>{{ $booking->total_subtotal }}</td>

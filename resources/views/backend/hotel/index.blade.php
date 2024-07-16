@@ -48,19 +48,12 @@
                                     @foreach ($datahotel as $hotel)
                                     <tr>
                                         <td>
-                                            <div class="dropdown">
-                                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Actions
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item text-primary" href="{{ route('hotel.edit', $hotel->id_hotel) }}">
-                                                        <i class="fas fa-edit"></i> Edit
-                                                    </a>
-                                                    <a class="dropdown-item text-danger" href="{{ route('hotel.destroy', $hotel->id_hotel) }}" data-confirm-delete="true">
-                                                        <i class="fas fa-trash"></i> Delete
-                                                    </a>
-                                                </div>
-                                            </div>
+                                            <a class="btn btn-sm btn-primary" href="{{ route('hotel.edit', $hotel->id_hotel) }}">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+                                            <a class="btn btn-sm btn-danger" href="{{ route('hotel.destroy', $hotel->id_hotel) }}" data-confirm-delete="true">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </a>
                                         </td>
                                         <td>{{ $hotel->nama_hotel }}</td>
                                         <td>{{ $hotel->contact_person }}</td>

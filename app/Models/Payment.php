@@ -22,7 +22,7 @@ class Payment extends Model
     // Define the relationship with booking
     public function booking()
     {
-        return $this->belongsTo(Booking::class, 'id_booking', 'booking_id');
+        return $this->belongsTo(Booking::class, 'id_booking', 'id_booking');
     }
 
     public function detailpay()
