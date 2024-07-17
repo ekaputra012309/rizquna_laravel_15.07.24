@@ -193,24 +193,29 @@ class BookingController extends Controller
         }
     }
 
-    public function updateStatusToLunas(Request $request, $id)
+    public function updateStatus(Request $request)
     {
-        $idWithSlashes = preg_replace('/-(?!HTL)/', '/', $id);
+        // Validate the incoming request
+        $validatedData = $request->validate([
+            'id_payment' => 'required|exists:payments,id_payment', // Ensure the id_payment exists
+            'status' => 'required|string|in:Lunas,DP,Piutang', // Ensure the status is valid
+        ]);
+
         try {
-            // $booking = Booking::where('id_booking', $idWithSlashes)->firstOrFail();
+            // Find the payment by id_payment
+            $payment = Payment::findOrFail($validatedData['id_payment']);
+            $id_booking = $payment->id_booking; // Get the id_booking from payment
 
-            // Update only the status field
-            // $booking->status = $request->status;
-            // $booking->save();
+            // Find the booking by id_booking
+            $booking = Booking::findOrFail($id_booking);
 
-            $bookingId = Booking::where('booking_id', $idWithSlashes)->value('id_booking');
-            $booking = Booking::findOrFail($bookingId);
-            $booking->status = $request->status;
+            // Update the booking status
+            $booking->status = $validatedData['status'];
             $booking->save();
 
-            return response()->json($booking, 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Booking not found', 'id booking' => $idWithSlashes, 'status' => $request->status], 404);
+            return response()->json(['success' => true, 'message' => 'Booking status updated successfully!'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update booking status: ' . $e->getMessage()], 500);
         }
     }
 }

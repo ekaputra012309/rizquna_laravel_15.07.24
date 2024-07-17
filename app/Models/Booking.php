@@ -22,6 +22,7 @@ class Booking extends Model
         'keterangan',
         'total_discount',
         'total_subtotal',
+        'status',
         'user_id',
     ];
 

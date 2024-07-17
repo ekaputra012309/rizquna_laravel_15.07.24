@@ -39,7 +39,7 @@ class PaymentController extends Controller
         $payment = Payment::with('detailpay', 'booking', 'booking.agent', 'booking.hotel')->find($id);
         $booking_d = BookingDetail::with('room', 'user')->where('booking_id', $payment->booking->booking_id)->get();
         $data = array(
-            'title' => 'Payment Detail| ',
+            'title' => 'Payment Detail | ',
             'datapayment' => $payment,
             'booking_d' => $booking_d,
         );

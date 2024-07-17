@@ -27,17 +27,19 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6 d-flex align-items-center">
-                                    <select class="form-control me-2" id="bankSelect" style="width: 150px;">
-                                        <option value="MANDIRI">MANDIRI</option>
-                                        <option value="BSI">BSI</option>
-                                    </select>
-                                    &nbsp;
-                                    <button type="button" class="btn btn-danger ms-2" id="cetakPembayaran" style="min-width: 100px;">
-                                        <i class="bi bi-printer"></i> Cetak
-                                    </button>
+                                    <form class="d-flex" action="{{ route('cetak.rizquna') }}" method="GET" target="_blank">
+                                        <input type="hidden" name="idbooking" value="{{ $datapayment->booking->id_booking }}">
+                                        <select class="form-control me-2" id="bank" name="bank" style="width: 150px;">
+                                            <option value="MANDIRI">MANDIRI</option>
+                                            <option value="BSI">BSI</option>
+                                        </select> &nbsp;
+                                        <button type="submit" class="btn btn-danger" style="min-width: 100px;">
+                                            <i class="bi bi-printer"></i> Cetak
+                                        </button>
+                                    </form>
                                 </div>
                                 <div class="col-md-6 d-flex justify-content-end">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detailPembayaranModal">
+                                    <button type="button" class="btn btn-primary button-bayar" data-toggle="modal" data-target="#detailPembayaranModal">
                                         <i class="bi bi-wallet2"></i> Add Pembayaran
                                     </button>
                                 </div>

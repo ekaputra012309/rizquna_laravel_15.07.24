@@ -47,6 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('bookingdetail', BookingDetailController::class); //booking detail
     Route::resource('payment', PaymentController::class); //payment
     Route::resource('paymentdetail', PaymentDetailController::class); //payment detail
+
+    Route::post('/update-booking-status', [BookingController::class, 'updateStatus'])->name('update.booking.status');
+    Route::get('/cetak-rizquna', [PaymentDetailController::class, 'cetakRizquna'])->name('cetak.rizquna');
 });
 
 require __DIR__ . '/auth.php';

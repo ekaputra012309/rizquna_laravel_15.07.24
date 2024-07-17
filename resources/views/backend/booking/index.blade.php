@@ -50,12 +50,21 @@
                                     @foreach ($databooking as $booking)
                                     <tr>
                                         <td>
+                                            @if ($booking->status === 'Lunas')
+                                            <button class="btn btn-primary btn-sm" disabled>
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                            <button class="btn btn-danger btn-sm" disabled>
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                            @else
                                             <a class="btn btn-primary btn-sm" href="{{ route('booking.edit', $booking->id_booking) }}">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
                                             <a class="btn btn-danger btn-sm" href="{{ route('booking.destroy', $booking->id_booking) }}" data-confirm-delete="true">
                                                 <i class="fas fa-trash"></i> Delete
                                             </a>
+                                            @endif
                                         </td>
                                         <td>{{ $booking->booking_id }}</td>
                                         <td>{{ \Carbon\Carbon::parse($booking->tgl_booking)->locale('id')->translatedFormat('d F Y') }}</td>
@@ -74,7 +83,6 @@
                                         <td>
                                             <span class="{{ $statusClass }}">{{ $booking->status }}</span>
                                         </td>
-
                                     </tr>
                                     @endforeach
                                 </tbody>
