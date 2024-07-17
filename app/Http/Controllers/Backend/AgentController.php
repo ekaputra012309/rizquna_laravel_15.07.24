@@ -24,10 +24,8 @@ class AgentController extends Controller
 
     public function create()
     {
-        $lantai = Agent::all();
         $data = array(
             'title' => 'Add Agent | ',
-            'datalantai' => $lantai,
         );
         return view('backend.agent.create', $data);
     }

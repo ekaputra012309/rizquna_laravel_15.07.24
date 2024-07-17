@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\BookingController;
 use App\Http\Controllers\Backend\BookingDetailController;
 use App\Http\Controllers\Backend\PaymentController;
 use App\Http\Controllers\Backend\PaymentDetailController;
+use App\Http\Controllers\Backend\PrivilageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('bookingdetail', BookingDetailController::class); //booking detail
     Route::resource('payment', PaymentController::class); //payment
     Route::resource('paymentdetail', PaymentDetailController::class); //payment detail
+    Route::resource('privilage', PrivilageController::class); //privilage
 
     Route::post('/update-booking-status', [BookingController::class, 'updateStatus'])->name('update.booking.status');
     Route::get('/cetak-rizquna', [PaymentDetailController::class, 'cetakRizquna'])->name('cetak.rizquna');
