@@ -63,10 +63,10 @@
 
         <footer class="main-footer">
             <div class="float-right d-none d-sm-block">
-                <b>Version</b> 1.0.0
+                <b>Version</b> 1.1.0
             </div>
             <strong>Copyright &copy; {{ date('Y') >= 2024 ? '2024' : '2024-' . date('Y') }}
-                {{-- <a href="https://adminlte.io">IT Help Desk</a>. --}}
+                {{ config('app.name') }}
             </strong>
             All rights
             reserved.
@@ -75,6 +75,24 @@
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
     </div>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '{{ route("get.role.name") }}',
+                type: 'GET',
+                success: function(response) {
+                    if (response.role_name) {
+                        $('.roleuser').text(response.role_name);
+                    } else {
+                        console.log("Role Name not found");
+                    }
+                },
+                error: function(error) {
+                    console.log("Error fetching role name");
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

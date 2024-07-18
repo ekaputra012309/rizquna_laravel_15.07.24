@@ -14,7 +14,9 @@ class PrivilageController extends Controller
 {
     public function index()
     {
-        $privilage = Privilage::with('user', 'role')->get();
+        $privilage = Privilage::with('user', 'role')
+            ->where('role_id', '!=', 1)
+            ->get();
         $data = array(
             'title' => 'Privilage | ',
             'dataprivilage' => $privilage,
@@ -33,8 +35,13 @@ class PrivilageController extends Controller
 
     public function create()
     {
-        $user = User::all();
-        $role = Role::all();
+        $excludedUserIds = Privilage::pluck('user_id')->toArray();
+
+        $user = User::where('id', '!=', 1)
+            ->whereNotIn('id', $excludedUserIds)
+            ->get();
+        $role = Role::where('kode_role', '!=', 'superadmin')->get();
+
         $data = array(
             'title' => 'Add Privilage | ',
             'datauser' => $user,
@@ -54,9 +61,13 @@ class PrivilageController extends Controller
 
     public function edit(Privilage $privilage)
     {
+        $user = User::where('id', '!=', 1)->get();
+        $role = Role::where('kode_role', '!=', 'superadmin')->get();
         $data = array(
             'title' => 'Edit Privilage | ',
             'privilage' => $privilage,
+            'datauser' => $user,
+            'datarole' => $role,
         );
         return view('backend.privilage.edit', $data);
     }
@@ -81,5 +92,11 @@ class PrivilageController extends Controller
         Alert::success('Success', 'privilage deleted successfully.');
 
         return redirect()->route('privilage.index');
+    }
+
+    public function getRoleName()
+    {
+        $roleName = Privilage::getRoleNameForAuthenticatedUser();
+        return response()->json(['role_name' => $roleName]);
     }
 }

@@ -19,9 +19,8 @@
             </a>
             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                 <a href="#" class="dropdown-item">
-                    {{-- <i class="fas fa-user-tag mr-2"></i> --}}
-                    <span class="small">Login as <span
-                            class="font-weight-bold">{{ auth()->user()->role }}</span></span>
+                    <!-- <i class="fas fa-user-tag mr-2"></i> -->
+                    <span class="small">Login as <span class="font-weight-bold roleuser"></span></span>
                 </a>
                 <div class="dropdown-divider"></div>
                 <a href="{{ route('profile.edit') }}" class="dropdown-item">
@@ -31,10 +30,8 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
 
-                    <a href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                                        this.closest('form').submit();"
-                        class="dropdown-item">
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                        this.closest('form').submit();" class="dropdown-item">
                         <i class="fas fa-sign-out-alt mr-2"></i> Logout
                     </a>
                 </form>

@@ -26,7 +26,14 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"> </h3>
+                            <div class="card-title">
+                                <a href="{{ route('agents.export.excel') }}" class="btn btn-success btn-sm">
+                                    <i class="fas fa-file-excel"></i> Export Excel
+                                </a>
+                                <a href="{{ route('agents.export.pdf') }}" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-file-pdf"></i> Export PDF
+                                </a>
+                            </div>
                             <div class="card-tools">
                                 <a href="{{ route('agent.create') }}" class="btn btn-primary btn-sm">
                                     <i class="fas fa-plus"></i> Add Data

@@ -15,6 +15,7 @@ class UserController extends Controller
         $authUserId = auth()->id();
 
         $users = User::where('id', '!=', $authUserId)
+            ->where('id', '!=', 1)
             ->get();
 
         $data = array(

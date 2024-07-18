@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Privilage extends Model
 {
@@ -19,5 +20,11 @@ class Privilage extends Model
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public static function getRoleNameForAuthenticatedUser()
+    {
+        $privilage = self::where('user_id', Auth::id())->first();
+        return $privilage ? $privilage->role->nama_role : null;
     }
 }

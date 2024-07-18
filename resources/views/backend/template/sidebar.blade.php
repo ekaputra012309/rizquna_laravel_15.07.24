@@ -86,7 +86,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('visa.index') }}" class="nav-link {{ request()->routeIs('visa.index') ? 'active' : '' }}">
                         <i class="nav-icon fab fa-cc-visa"></i>
                         <p>
                             Payment Visa

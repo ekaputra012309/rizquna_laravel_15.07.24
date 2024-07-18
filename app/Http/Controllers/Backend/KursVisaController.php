@@ -1,21 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\KursVisa;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KursVisaController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-
     public function index(Request $request)
     {
         $datenow = $request->input('datenow');
@@ -40,8 +34,9 @@ class KursVisaController extends Controller
 
     public function store(Request $request)
     {
-        $visa = KursVisa::create($request->all());
+        KursVisa::create($request->all());
 
-        return response()->json($visa, 201);
+        Alert::success('Success', 'kurs created successfully.');
+        return redirect()->route('visa.index');
     }
 }

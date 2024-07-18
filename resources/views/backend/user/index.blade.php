@@ -46,19 +46,12 @@
                                     @foreach ($datauser as $user)
                                     <tr>
                                         <td>
-                                            <div class="dropdown">
-                                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Actions
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item text-primary" href="{{ route('user.edit', $user->id) }}">
-                                                        <i class="fas fa-edit"></i> Edit
-                                                    </a>
-                                                    <a class="dropdown-item text-danger" href="{{ route('user.destroy', $user->id) }}" data-confirm-delete="true">
-                                                        <i class="fas fa-trash"></i> Delete
-                                                    </a>
-                                                </div>
-                                            </div>
+                                            <a class="btn btn-sm btn-primary" href="{{ route('user.edit', $user->id) }}">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+                                            <a class="btn btn-sm btn-danger" href="{{ route('user.destroy', $user->id) }}" data-confirm-delete="true">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </a>
                                         </td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>

@@ -1,22 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Visa;
 use Illuminate\Http\Request;
 use App\Models\VisaDetail;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 class VisaDetailController extends Controller
 {
-    public function __construct()
+    public function index(Request $request)
     {
-        $this->middleware('auth:api');
-    }
+        $id_visa = $request->input('id_visa');
+        $visas = VisaDetail::with('visa')
+            ->where('id_visa', $id_visa)
+            ->get();
 
-    public function index()
-    {
-        $visas = VisaDetail::with('visa')->get();
         return response()->json($visas);
     }
 
@@ -48,9 +49,40 @@ class VisaDetailController extends Controller
 
     public function store(Request $request)
     {
-        $visa = VisaDetail::create($request->all());
+        // Validate the request data
+        $validatedData = $request->validate([
+            'id_visa' => 'required|exists:visas,id_visa',
+        ]);
 
-        return response()->json($visa, 201);
+        DB::beginTransaction();
+
+        try {
+            // Create the new payment detail first
+            $paymentDetail = VisaDetail::create($request->all());
+
+            // Now check how many payment details exist with the given id_payment
+            $existingPaymentDetailCount = VisaDetail::where('id_visa', $validatedData['id_visa'])->count();
+
+            // If exactly one existing payment detail matches, update the booking status to 'DP'
+            if ($existingPaymentDetailCount === 1) {
+                $visa = Visa::where('id_visa', $validatedData['id_visa'])->first();
+                if ($visa) {
+                    $id_booking = $visa->id_visa;
+                    $booking = Visa::find($id_booking);
+                    if ($booking) {
+                        $booking->status = 'DP';
+                        $booking->save();
+                    }
+                }
+            }
+
+            DB::commit();
+
+            return response()->json($paymentDetail, 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Failed to create visa detail: ' . $e->getMessage()], 500);
+        }
     }
 
     public function update(Request $request, $id)
@@ -66,12 +98,36 @@ class VisaDetailController extends Controller
 
     public function destroy($id)
     {
+        DB::beginTransaction();
+
         try {
-            $visa = VisaDetail::findOrFail($id);
-            $visa->delete();
-            return response()->json(null, 204);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Visa Detail Not Found'], 404);
+            $payment = VisaDetail::findOrFail($id);
+            $id_visa = $payment->id_visa; // Get the id_payment before deleting
+
+            // Delete the payment detail
+            $payment->delete();
+
+            // Check the number of remaining payment details with the same id_payment
+            $existingVisaDetailCount = VisaDetail::where('id_visa', $id_visa)->count();
+
+            if ($existingVisaDetailCount === 0) {
+                // If there are no remaining payment details, update the booking status to 'Piutang'
+                $visa = Visa::where('id_visa', $id_visa)->first();
+                if ($visa) {
+                    $id_booking = $visa->id_visa;
+                    $booking = Visa::find($id_booking);
+                    if ($booking) {
+                        $booking->status = 'Piutang';
+                        $booking->save();
+                    }
+                }
+            }
+
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Failed to delete payment detail: ' . $e->getMessage()], 500);
         }
     }
 }

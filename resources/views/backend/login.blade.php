@@ -13,11 +13,6 @@
     <link rel="stylesheet" href="{{ asset('backend/css/adminlte.min.css?v=3.2.0') }}">
 
     <style>
-        body {
-            /* background-color: var(--bs-body-bg); */
-            background-color: #b9b9b9;
-        }
-
         #auth {
             height: 100vh;
             overflow-x: hidden;
@@ -62,53 +57,7 @@
     </style>
 </head>
 
-<body>
-    <!-- <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-12 mx-auto">
-                <p class="login-box-msg">Sign in to start your session</p>
-                <form action="{{ route('login') }}" method="POST">
-                    @csrf
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email" name="email" required>
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password" id="password" name="password" required>
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                                <input type="checkbox" id="show-password">
-                                <label for="show-password">
-                                    Show Password
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div class="col-lg-8 d-none d-lg-block">
-                <div id="auth-right">
-
-                </div>
-            </div>
-        </div>
-    </div> -->
-
+<body class="bg-gray">
     <div id="auth">
         <div class="row h-100">
             <div class="col-lg-4 col-12">

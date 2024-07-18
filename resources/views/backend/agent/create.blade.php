@@ -45,7 +45,8 @@
                                 <div class="col-md-12 col-12">
                                     <div class="form-group">
                                         <label for="alamat-column" class="form-label">Alamat</label>
-                                        <input type="text" id="alamat" class="form-control" placeholder="Alamat" name="alamat" required>
+                                        <!-- <input type="text" id="alamat" class="form-control" placeholder="Alamat" name="alamat" required> -->
+                                        <textarea name="alamat" id="alamat" class="form-control"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12">
