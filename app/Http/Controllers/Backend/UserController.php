@@ -89,7 +89,6 @@ class UserController extends Controller
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
-        $user->role = $request->role;
         $user->save();
 
         Alert::success('Success', 'User updated successfully.');

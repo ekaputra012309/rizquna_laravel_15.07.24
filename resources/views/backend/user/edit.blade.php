@@ -62,15 +62,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="role">Role</label>
-                                    <select name="role" id="role" class="form-control select2bs4">
-                                        <option value="Petugas" {{ $user->role == 'Petugas' ? 'selected' : '' }}>Petugas
-                                        </option>
-                                        <option value="Monitoring" {{ $user->role == 'Monitoring' ? 'selected' : '' }}>
-                                            Monitoring</option>
-                                    </select>
-                                </div>
                             </div>
 
                             <div class="card-footer">

@@ -70,13 +70,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="role">Role</label>
-                                <select name="role" id="role" class="form-control select2bs4">
-                                    <option value="Petugas">Petugas</option>
-                                    <option value="Monitoring">Owner</option>
-                                </select>
-                            </div>
                         </div>
 
                         <div class="card-footer">
