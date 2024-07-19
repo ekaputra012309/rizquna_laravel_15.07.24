@@ -44,12 +44,38 @@
     {{-- sweef alert --}}
     <link rel="stylesheet" href="{{ asset('backend/css/sweetalert2.min.css') }}">
     <script src="{{ asset('backend/js/sweetalert2.min.js') }}"></script>
+    <!-- calendar -->
+    <link rel="stylesheet" href="{{ asset('backend/css/fullcalendar/main.css') }}">
 
     <style>
         [class*="sidebar-light-"] .nav-treeview>.nav-item>.nav-link.active,
         [class*="sidebar-light-"] .nav-treeview>.nav-item>.nav-link.active:hover {
             background-color: #007bff !important;
             color: #fff !important;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table td {
+            white-space: nowrap;
+        }
+
+        .input-qty,
+        .input-tarif,
+        .input-discount,
+        .input-subtotal {
+            min-width: 80px;
+        }
+
+        .input-tarif {
+            min-width: 120px;
+        }
+
+        .input-subtotal {
+            min-width: 140px;
         }
     </style>
 </head>

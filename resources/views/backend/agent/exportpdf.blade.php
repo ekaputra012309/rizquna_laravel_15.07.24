@@ -4,11 +4,18 @@
 <head>
     <title>Data Agents</title>
     <link rel="stylesheet" href="{{ asset('backend/css/adminlte.min.css?v=3.2.0') }}">
+    <style>
+        table,
+        td,
+        th {
+            padding: 5px;
+        }
+    </style>
 </head>
 
 <body class="small">
     <p class="text-center font-weight-bold text-lg">Data Agents</p>
-    <table class="table table-border w-100">
+    <table class="table-bordered w-100">
         <thead>
             <tr>
                 <th>Nama Agent</th>

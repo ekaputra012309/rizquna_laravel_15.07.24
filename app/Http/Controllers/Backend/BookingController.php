@@ -11,6 +11,7 @@ use App\Models\Hotel;
 use App\Models\Payment;
 use App\Models\PaymentDetail;
 use App\Models\Room;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -67,7 +68,7 @@ class BookingController extends Controller
     {
         $currentYear = date('Y');
         $currentMonth = date('m');
-
+        $userId = auth()->user()->id;
 
         $maxId = Booking::whereYear('created_at', $currentYear)
             ->whereMonth('created_at', $currentMonth)
@@ -90,7 +91,7 @@ class BookingController extends Controller
         $newId = str_pad($newNumericPart, 3, '0', STR_PAD_LEFT);
 
 
-        $autoId = $newId . '/INV-HTL/' . $romanMonth . '/' . $currentYear;
+        $autoId = $newId . '/INV-HTL/' . $romanMonth . '/' . $currentYear . '.' . $userId;
         $agent = Agent::orderBy('nama_agent', 'asc')->get();
         $hotel = Hotel::orderBy('nama_hotel', 'asc')->get();
         $bookedRoomIds = BookingDetail::where('booking_id', $autoId)->pluck('room_id');
@@ -227,6 +228,40 @@ class BookingController extends Controller
             return response()->json(['success' => true, 'message' => 'Booking status updated successfully!'], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to update booking status: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function getEvents()
+    {
+        $events = Booking::with('agent')->get()->map(function ($booking) {
+            // Ensure `tgl_booking` and `end_date` are Carbon instances
+            $start = $booking->tgl_booking instanceof Carbon ? $booking->tgl_booking : Carbon::parse($booking->tgl_booking);
+            $end = $booking->end_date ? ($booking->end_date instanceof Carbon ? $booking->end_date : Carbon::parse($booking->end_date)) : null;
+
+            return [
+                'title' => $booking->agent->nama_agent,
+                'start' => $start->format('Y-m-d\TH:i:s'),
+                'end' => $end ? $end->format('Y-m-d\TH:i:s') : null,
+                'backgroundColor' => $this->getStatusColor($booking->status),
+                'borderColor' => $this->getStatusColor($booking->status),
+                'textColor' => '#fff'
+            ];
+        });
+
+        return response()->json($events);
+    }
+
+    private function getStatusColor($status)
+    {
+        switch ($status) {
+            case 'Lunas':
+                return '#28a745'; // Success
+            case 'DP':
+                return '#ffc107'; // Warning
+            case 'Piutang':
+                return '#dc3545'; // Danger
+            default:
+                return '#6c757d'; // Default
         }
     }
 }

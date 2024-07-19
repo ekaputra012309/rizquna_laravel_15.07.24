@@ -103,4 +103,19 @@ class UserController extends Controller
 
         return redirect()->route('user.index');
     }
+
+    public function resetPassword($id)
+    {
+        $user = User::findOrFail($id);
+
+        // Generate a new password
+        $newPassword = '12345678';
+
+        // Update the user's password
+        $user->password = Hash::make($newPassword);
+        $user->save();
+
+        Alert::success('Success', 'password reset successfully.');
+        return redirect()->route('user.index');
+    }
 }

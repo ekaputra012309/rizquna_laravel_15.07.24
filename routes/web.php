@@ -63,6 +63,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-visa-status', [VisaController::class, 'updateStatus'])->name('update.visa.status');
     Route::get('/cetak-rizquna', [PaymentDetailController::class, 'cetakRizquna'])->name('cetak.rizquna');
     Route::get('/cetak-visa', [VisaDetailController::class, 'cetakVisa'])->name('cetak.visa');
+    Route::get('/agents-report', [AgentController::class, 'filterReport'])->name('agents.report');
+    Route::get('/agents-report-index', [AgentController::class, 'reportAgent'])->name('agents.report.index');
+    Route::get('/agents-exports', [AgentController::class, 'export'])->name('agents.export');
+
+    Route::get('/user/{id}/reset-password', [UserController::class, 'resetPassword'])->name('user.resetPassword');
+    Route::get('/events', [BookingController::class, 'getEvents'])->name('events');
 });
 
 require __DIR__ . '/auth.php';

@@ -27,4 +27,10 @@ class Privilage extends Model
         $privilage = self::where('user_id', Auth::id())->first();
         return $privilage ? $privilage->role->nama_role : null;
     }
+
+    public static function getRoleKodeForAuthenticatedUser()
+    {
+        $privilage = self::where('user_id', Auth::id())->first();
+        return $privilage ? $privilage->role->kode_role : null;
+    }
 }
