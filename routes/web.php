@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-booking-status', [BookingController::class, 'updateStatus'])->name('update.booking.status');
     Route::post('/update-visa-status', [VisaController::class, 'updateStatus'])->name('update.visa.status');
     Route::get('/cetak-rizquna', [PaymentDetailController::class, 'cetakRizquna'])->name('cetak.rizquna');
+    Route::get('/cetak-visa', [VisaDetailController::class, 'cetakVisa'])->name('cetak.visa');
 });
 
 require __DIR__ . '/auth.php';

@@ -44,6 +44,7 @@
                                         <th>Total Diskon</th>
                                         <th>Total Subtotal</th>
                                         <th>Status</th>
+                                        <th>User</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -83,6 +84,7 @@
                                         <td>
                                             <span class="{{ $statusClass }}">{{ $booking->status }}</span>
                                         </td>
+                                        <td>{{ $booking->user->name ?? '' }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>

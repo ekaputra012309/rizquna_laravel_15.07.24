@@ -95,19 +95,13 @@ class VisaController extends Controller
 
     public function destroy($id)
     {
-        try {
-            // Retrieve the visa_id before deleting
-            $visaId = Visa::where('id_visa', $id)->value('id_visa');
-            // Delete visa details associated with the retrieved visa_id
-            VisaDetail::where('id_visa', $visaId)->delete();
-            // Delete the visa
-            Visa::where('id_visa', $id)->delete();
-            Alert::success('Success', 'visa deleted successfully.');
+        $visaId = Visa::where('id_visa', $id)->value('id_visa');
+        VisaDetail::where('id_visa', $visaId)->delete();
+        Visa::where('id_visa', $id)->delete();
+        KursVisa::where('id_visa', $id)->delete();
+        Alert::success('Success', 'visa deleted successfully.');
 
-            return redirect()->route('visa.index');
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Visa Not Found'], 404);
-        }
+        return redirect()->route('visa.index');
     }
 
     public function updateStatus(Request $request)

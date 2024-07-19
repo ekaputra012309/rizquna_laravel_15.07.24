@@ -27,8 +27,8 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6 d-flex align-items-center">
-                                    <form class="d-flex" action="{{ route('cetak.rizquna') }}" method="GET" target="_blank">
-                                        <input type="hidden" name="idbooking" value="{{ $datavisa->visa_id }}">
+                                    <form class="d-flex" action="{{ route('cetak.visa') }}" method="GET" target="_blank">
+                                        <input type="hidden" name="idvisa" value="{{ $datavisa->id_visa }}">
                                         <select class="form-control me-2" id="bank" name="bank" style="width: 150px;">
                                             <option value="MANDIRI">MANDIRI</option>
                                             <option value="BSI">BSI</option>

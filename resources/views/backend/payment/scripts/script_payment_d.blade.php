@@ -140,7 +140,8 @@
                         icon: 'success',
                         title: 'Success',
                         text: 'Pembayaran added successfully!',
-                        confirmButtonText: 'OK'
+                        confirmButtonText: 'OK',
+                        timer: 1000,
                     });
 
                     // Calculate and update hasil konversi
@@ -192,7 +193,7 @@
                         icon: 'error',
                         title: 'Error',
                         text: errorMessage,
-                        confirmButtonText: 'OK'
+                        confirmButtonText: 'OK',
                     });
                 }
             });

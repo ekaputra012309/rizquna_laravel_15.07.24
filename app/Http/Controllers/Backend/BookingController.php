@@ -12,6 +12,7 @@ use App\Models\Payment;
 use App\Models\PaymentDetail;
 use App\Models\Room;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class BookingController extends Controller
@@ -34,7 +35,7 @@ class BookingController extends Controller
     {
         $query = Booking::with('agent', 'hotel', 'details', 'user');
 
-        // Apply conditions based on request parameters
+
         if ($request->filled('tgl_from')) {
             $query->whereDate('tgl_booking', '>', $request->tgl_from);
         }
@@ -45,12 +46,12 @@ class BookingController extends Controller
             $query->where('agent_id', $request->agent_id);
         }
 
-        // If no parameters passed, order by created_at
+
         if (!$request->has('tgl_from') && !$request->has('tgl_to') && !$request->has('agent_id')) {
             $query->orderBy('created_at', 'desc');
         }
 
-        // Execute the query
+
         $bookings = $query->get();
         $data = array(
             'title' => 'Booking | ',
@@ -67,28 +68,28 @@ class BookingController extends Controller
         $currentYear = date('Y');
         $currentMonth = date('m');
 
-        // Find the maximum ID from existing bookings created in the current month and year
+
         $maxId = Booking::whereYear('created_at', $currentYear)
             ->whereMonth('created_at', $currentMonth)
             ->max('booking_id');
 
-        // Extract the month from the last stored auto ID, if it exists
+
         $lastStoredMonth = $maxId ? explode('/', $maxId)[2] : null;
-        // Convert the month number to Roman numeral
+
         $romanMonth = $this->toRoman($currentMonth);
         $numericPart = (int)explode('/', $maxId)[0];
-        // If there are no existing bookings for the current month and year, start from 1
+
         if ($maxId === null || $lastStoredMonth !== $romanMonth) {
             $newNumericPart = 1;
         } else {
-            // Extract the numeric part and increment by 1
+
             $newNumericPart = $numericPart + 1;
         }
 
-        // Format the new ID to a 3-digit string
+
         $newId = str_pad($newNumericPart, 3, '0', STR_PAD_LEFT);
 
-        // Construct the auto ID with the Roman numeral month, year, and the new numeric part
+
         $autoId = $newId . '/INV-HTL/' . $romanMonth . '/' . $currentYear;
         $agent = Agent::orderBy('nama_agent', 'asc')->get();
         $hotel = Hotel::orderBy('nama_hotel', 'asc')->get();
@@ -153,7 +154,11 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
-        Booking::create($request->all());
+
+        $data = $request->all();
+        $data['user_id'] = auth()->user()->id;
+        Booking::create($data);
+        // dd($data);
         Alert::success('Success', 'booking created successfully.');
 
         return redirect()->route('booking.index');
@@ -174,42 +179,48 @@ class BookingController extends Controller
 
     public function destroy($id)
     {
-        try {
-            // Retrieve the booking_id before deleting
-            $bookingId = Booking::where('id_booking', $id)->value('booking_id');
-            // Delete booking details associated with the retrieved booking_id
-            BookingDetail::where('booking_id', $bookingId)->delete();
-            // Delete the payment
-            $paymentId = Payment::where('id_booking', $bookingId)->value('id_payment');
-            PaymentDetail::where('id_payment', $paymentId)->delete();
-            Payment::where('id_payment', $paymentId)->delete();
-            // Delete the booking
-            Booking::where('id_booking', $id)->delete();
-            Alert::success('Success', 'booking deleted successfully.');
+        DB::transaction(function () use ($id) {
+            // Retrieve the booking_id using the provided id_booking
+            $booking = Booking::where('id_booking', $id)->firstOrFail();
 
-            return redirect()->route('booking.index');
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Booking Not Found'], 404);
-        }
+            // Delete related booking details
+            BookingDetail::where('booking_id', $booking->booking_id)->delete();
+
+            // Retrieve payment_id related to the booking
+            $paymentId = Payment::where('id_booking', $booking->id_booking)->value('id_payment');
+
+            if ($paymentId) {
+                // Delete related payment details
+                PaymentDetail::where('id_payment', $paymentId)->delete();
+                // Delete payment
+                Payment::where('id_payment', $paymentId)->delete();
+            }
+
+            // Finally, delete the booking
+            $booking->delete();
+        });
+        Alert::success('Success', 'booking deleted successfully.');
+
+        return redirect()->route('booking.index');
     }
 
     public function updateStatus(Request $request)
     {
-        // Validate the incoming request
+
         $validatedData = $request->validate([
-            'id_payment' => 'required|exists:payments,id_payment', // Ensure the id_payment exists
-            'status' => 'required|string|in:Lunas,DP,Piutang', // Ensure the status is valid
+            'id_payment' => 'required|exists:payments,id_payment',
+            'status' => 'required|string|in:Lunas,DP,Piutang',
         ]);
 
         try {
-            // Find the payment by id_payment
-            $payment = Payment::findOrFail($validatedData['id_payment']);
-            $id_booking = $payment->id_booking; // Get the id_booking from payment
 
-            // Find the booking by id_booking
+            $payment = Payment::findOrFail($validatedData['id_payment']);
+            $id_booking = $payment->id_booking;
+
+
             $booking = Booking::findOrFail($id_booking);
 
-            // Update the booking status
+
             $booking->status = $validatedData['status'];
             $booking->save();
 

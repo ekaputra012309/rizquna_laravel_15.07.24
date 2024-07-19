@@ -37,18 +37,20 @@
         }
 
         .no-border {
-            border-left: 1px solid white;
+            border-left: 1px solid rgb(255, 255, 255);
             border-bottom: 1px solid white;
         }
 
-        .bank>tbody>tr>th {
-            border: 1px solid black;
-        }
-
-        table.detail,
+        #headd,
         th,
         td {
-            padding: 2px;
+            padding: 0px;
+        }
+
+        #detailvisa,
+        th,
+        td {
+            padding: 5px;
         }
 
         @media print {
@@ -69,7 +71,7 @@
 </head>
 
 <body>
-    <div>
+    <div style="font-size: 11pt">
         <table border="0">
             <thead>
                 <tr>
@@ -90,87 +92,62 @@
         </table>
         <div class="horizontal-rule red"></div>
         <div class="horizontal-rule black"></div>
-
-        <table style="border-collapse: collapse" border="0">
+        <u>
+            <h2 style="text-align: center">INVOICE</h2>
+        </u>
+        <table id="headd">
             <thead>
                 <tr>
                     <th style="text-align: left" colspan="8">Customer</th>
                 </tr>
                 <tr>
                     <td>Name</td>
-                    <td>: <b><span id="namaagen">{{$databooking->agent->nama_agent}}</span></b></td>
+                    <td>: <b><span id="namaagen">{{$databooking->agent->nama_agent}} </span></b></td>
                     <td colspan="3" width="20%"></td>
                     <td colspan="2">Number</td>
-                    <td>: <span id="noinvoice">{{$databooking->booking_id}}</span></td>
+                    <td>: <span id="noinvoice">{{$databooking->visa_id}}</span></td>
                 </tr>
                 <tr>
                     <td colspan="5"></td>
                     <td colspan="2">Invoice Date</td>
-                    <td>: <span id="tglinvoice">{{ \Carbon\Carbon::parse($databooking->tgl_booking)->locale('id')->translatedFormat('d F Y') }}</span></td>
+                    <td>: <span id="tglinvoice">{{ \Carbon\Carbon::parse($databooking->tgl_payment_visa)->locale('id')->translatedFormat('d F Y') }}</span></td>
                 </tr>
                 <tr>
                     <td colspan="5"></td>
                     <td colspan="2">Payment Term</td>
                     <td>: <span id="metodebayar">Cash</span> / Transfer</td>
                 </tr>
-                <tr>
-                    <td>Nama Hotel</td>
-                    <td>: <b><span id="namahotel">{{$databooking->hotel->nama_hotel}}</span></b></td>
-                    <td colspan="6"></td>
-                </tr>
-                <tr>
-                    <td>Check In</td>
-                    <td>: <span id="checkin">{{ \Carbon\Carbon::parse($databooking->check_in)->locale('id')->translatedFormat('d F Y') }}</span></td>
-                    <td colspan="6"></td>
-                </tr>
-                <tr>
-                    <td>Check Out</td>
-                    <td>: <span id="checkout">{{ \Carbon\Carbon::parse($databooking->check_out)->locale('id')->translatedFormat('d F Y') }}</span></td>
-                    <td colspan="6"></td>
-                </tr>
             </thead>
         </table>
         <br>
-        <table border="1" class="detail" style="width: 90%;">
-            <thead style="text-align: center;">
+        <table border="1" style="width: 90%; border-collapse: collapse; border-spacing: 10px;" id="detailvisa">
+            <thead class="text-center">
                 <tr>
-                    <th>Room Type</th>
-                    <th>Room Quantity</th>
-                    <th>Durasi (N)</th>
-                    <th colspan="2">Room Rate</th>
-                    <th colspan="2">Ammount</th>
+                    <th>Tanggal Keberangkatan</th>
+                    <th>Jumlah Pax</th>
+                    <th colspan="2">Harga / Pax</th>
+                    <th colspan="2">Total</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach ($databooking->details as $detail)
+            <tbody style="vertical-align: bottom">
                 <tr>
-                    <td class="text-center">{{ $detail->room->keterangan }}</td>
-                    <td class="text-center">{{ $detail->qty }}</td>
-                    <td class="text-center">{{ $detail->malam }}</td>
-                    <td>{{ $databooking->mata_uang }}</td>
-                    <td class="text-right">{{ number_format($detail->tarif, 0, ',', '.') }}</td>
-                    <td>{{ $databooking->mata_uang }}</td>
-                    <td class="text-right">{{ number_format($detail->subtotal, 0, ',', '.') }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th class="text-center">TOTAL</th>
-                    <th class="text-center"><span id="sumqty">{{$totalQty}}</span></th>
-                    <th colspan="3" class="text-center">Sub Total</th>
-                    <th class="text-left">{{$databooking->mata_uang}}</th>
-                    <th class="text-right"><span id="sumamount">{{ number_format($totalSubtotal, 0, ',', '.')}}</span><input type="hidden" id="sumamount1">
+                    <th class="text-center">
+                        VISA <br>
+                        {{ \Carbon\Carbon::parse($databooking->tgl_keberangkatan)->locale('id')->translatedFormat('d F Y') }}
                     </th>
+                    <th class="text-center">{{ number_format($databooking->jumlah_pax, 0, ',', '.') }}</th>
+                    <th style="border-right: 1px solid rgba(0, 0, 0, 0)">$</th>
+                    <th class="text-right">{{ number_format($databooking->harga_pax, 0, ',', '.') }}</th>
+                    <th style="border-right: 1px solid rgba(0, 0, 0, 0)">$</th>
+                    <th class="text-right"> {{ number_format($databooking->total, 0, ',', '.') }} </th>
                 </tr>
+            </tbody>
+            <tfoot id="myTfoot">
                 <tr>
-                    <th colspan="2" rowspan="4" class="no-border"></th>
-                    <th colspan="3" class="text-center">Total dalam USD</th>
-                    <th colspan="2" style="text-align: right">$ {{number_format($totalUsd, 0, ',', '.')}}</th>
-                </tr>
-                <tr>
-                    <th colspan="3" class="text-center">Total dalam IDR</th>
-                    <th colspan="2" style="text-align: right">{{number_format($totalIdr, 0, ',', '.')}}</th>
+                    <th colspan="2" rowspan="3" class="no-border"></th>
+                    <th colspan="2" class="text-center">Total</th>
+                    <th style="text-align: left; border-right: 1px solid rgba(0, 0, 0, 0)">$</th>
+                    <th style="text-align: right"><span id="totalusd">{{ number_format($databooking->total, 0, ',', '.') }}</span></th>
                 </tr>
                 @php
                 $tglpay = [];
@@ -179,40 +156,37 @@
                 $counter = 1; // Initialize counter
                 @endphp
 
-                @foreach ($datapayment->detailpay as $pay)
+                @foreach ($databooking->details as $pay)
                 @php
-                $tglpay[] = "Deposit {$counter} " . \Carbon\Carbon::parse($pay->tgl_payment)->locale('id')->translatedFormat('d F Y');
-                $konversi[] = $datapayment->pilih_konversi; // Store konversi for each deposit
+                $tglpay[] = "Deposit {$counter} " . \Carbon\Carbon::parse($pay->tgl_payment_visa)->locale('id')->translatedFormat('d F Y');
+                $konversi[] = $databooking->kurs->pilih_konversi == 'USD' ? '$' : $databooking->kurs->pilih_konversi; // Store konversi for each deposit
                 $deposits[] = number_format($pay->deposit, 0, ',', '.'); // Format each deposit individually
                 $counter++; // Increment counter
                 @endphp
                 @endforeach
 
                 <tr>
-                    <th colspan="3" class="text-center">{!! implode('<br>', $tglpay) !!}</th> <!-- Deposit dates -->
+                    <th colspan="2" class="text-center">{!! implode('<br>', $tglpay) !!}</th> <!-- Deposit dates -->
                     <th class="text-left" style="border-right: 1px solid rgba(0, 0, 0, 0)">{!! implode('<br>', $konversi) !!}</th> <!-- Each conversion type on a new line -->
                     <th class="text-right">{!! implode('<br>', $deposits) !!}</th> <!-- Each deposit amount on a new line -->
                 </tr>
                 @php
-                $totalDeposit = array_sum(array_column($datapayment->detailpay->toArray(), 'deposit'));
-                $sisadeposit = $datapayment->hasil_konversi - $totalDeposit;
+                $totalDeposit = array_sum(array_column($databooking->details->toArray(), 'deposit'));
+                $sisadeposit = $databooking->kurs->hasil_konversi - $totalDeposit;
                 @endphp
 
                 <tr>
-                    <th colspan="3" class="text-center">{{$databooking->status == 'DP' ? 'Piutang' : $databooking->status}}</th>
-                    <th style="border-right: 1px solid rgba(0, 0, 0, 0)">{{$datapayment->pilih_konversi}}</th>
+                    <th colspan="2" class="text-center">{{$databooking->status == 'DP' ? 'Piutang' : $databooking->status}}</th>
+                    <th style="border-right: 1px solid rgba(0, 0, 0, 0)">{{$databooking->kurs->pilih_konversi == 'USD' ? '$' : $databooking->kurs->pilih_konversi}}</th>
                     <th class="text-right">{{ number_format($sisadeposit, 0, ',', '.') }}</th>
                 </tr>
             </tfoot>
         </table>
         <p>
             <b>
-                <u>*Syarat & Ketentuan</u> <br>
-                - Kurs mengikuti kurs BSI pada saat hari pembayaran <br>
-                - DP minimal 50% dari total tagihan <br>
-                - Pelunasan 2 minggu sebelum keberangkatan <br>
-                - Apabila Agent membatalkan setelah kamar terkonfirmasi, dan ada pinalty (denda) maka <br>
-                agent wajib membayar pinalty (denda) tersebut
+                <i>*note : kurs mengikuti kurs BSI pada saat hari pembayaran</i> <br>
+                * KURS BSI {{ \Carbon\Carbon::parse($databooking->kurs->created_at)->locale('id')->translatedFormat('d F Y') }} Rp. {{$databooking->kurs->kurs_bsi}}</span> <br>
+                * KURS RIYAL {{ \Carbon\Carbon::parse($databooking->kurs->created_at)->locale('id')->translatedFormat('d F Y') }} SAR {{$databooking->kurs->kurs_riyal}}</span>
             </b>
         </p>
         <table>

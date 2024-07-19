@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Rekening;
 use App\Models\Visa;
 use Illuminate\Http\Request;
 use App\Models\VisaDetail;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class VisaDetailController extends Controller
 {
@@ -129,5 +131,22 @@ class VisaDetailController extends Controller
             DB::rollBack();
             return response()->json(['error' => 'Failed to delete payment detail: ' . $e->getMessage()], 500);
         }
+    }
+
+    public function cetakVisa(Request $request)
+    {
+        $namabank = $request->input('bank');
+        $idvisa = $request->input('idvisa');
+        $visa = Visa::with('details', 'agent', 'kurs')->find($idvisa);
+        $bank = Rekening::where('rekening_id', 'like', '%' . $namabank . '%')->get();
+
+        $data = array(
+            'databank' => $bank,
+            'title' => 'Invoice | ',
+            'databooking' => $visa,
+        );
+        // dd($visa);
+        $pdf = FacadePdf::loadView('backend.visa.cetakvisa', $data);
+        return $pdf->stream('Invoice-.pdf');
     }
 }
