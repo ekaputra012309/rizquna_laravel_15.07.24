@@ -51,7 +51,7 @@
                                     @foreach ($databooking as $booking)
                                     <tr>
                                         <td>
-                                            @if ($booking->status === 'Lunas')
+                                            @if ($booking->status === 'Lunas' )
                                             <button class="btn btn-primary btn-sm" disabled>
                                                 <i class="fas fa-edit"></i> Edit
                                             </button>

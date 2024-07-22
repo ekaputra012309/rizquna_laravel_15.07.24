@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\PermintaanModel;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -26,8 +28,12 @@ class Backend extends Controller
 
     public function dashboard()
     {
+        $bookings = Booking::with('agent', 'hotel', 'details', 'user')
+            ->whereDate('tgl_booking', Carbon::today())
+            ->get();
         $data = [
             'title' => 'Dashboard | ',
+            'databooking' => $bookings,
         ];
 
         return view('backend.dashboard', $data);

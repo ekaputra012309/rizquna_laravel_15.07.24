@@ -147,6 +147,6 @@ class VisaDetailController extends Controller
         );
         // dd($visa);
         $pdf = FacadePdf::loadView('backend.visa.cetakvisa', $data);
-        return $pdf->stream('Invoice-.pdf');
+        return $pdf->stream('Invoice-' . $visa->visa_id . '.pdf');
     }
 }

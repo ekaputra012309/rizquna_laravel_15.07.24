@@ -94,7 +94,7 @@
 
         $("#example1").DataTable({
             "responsive": true,
-            "lengthChange": true,
+            "lengthChange": false,
             "autoWidth": true,
             "searching": false,
             "buttons": [{

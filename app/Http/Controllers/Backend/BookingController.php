@@ -13,6 +13,7 @@ use App\Models\PaymentDetail;
 use App\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -35,23 +36,10 @@ class BookingController extends Controller
     public function index(Request $request)
     {
         $query = Booking::with('agent', 'hotel', 'details', 'user');
-
-
-        if ($request->filled('tgl_from')) {
-            $query->whereDate('tgl_booking', '>', $request->tgl_from);
+        if (Auth::id() != 2) {
+            $query->where('user_id', Auth::id());
         }
-        if ($request->filled('tgl_to')) {
-            $query->whereDate('tgl_booking', '<', $request->tgl_to);
-        }
-        if ($request->filled('agent_id')) {
-            $query->where('agent_id', $request->agent_id);
-        }
-
-
-        if (!$request->has('tgl_from') && !$request->has('tgl_to') && !$request->has('agent_id')) {
-            $query->orderBy('created_at', 'desc');
-        }
-
+        $query->orderBy('created_at', 'desc');
 
         $bookings = $query->get();
         $data = array(
@@ -235,13 +223,15 @@ class BookingController extends Controller
     {
         $events = Booking::with('agent')->get()->map(function ($booking) {
             // Ensure `tgl_booking` and `end_date` are Carbon instances
-            $start = $booking->tgl_booking instanceof Carbon ? $booking->tgl_booking : Carbon::parse($booking->tgl_booking);
-            $end = $booking->end_date ? ($booking->end_date instanceof Carbon ? $booking->end_date : Carbon::parse($booking->end_date)) : null;
+            $start = $booking->check_in instanceof Carbon ? $booking->check_in : Carbon::parse($booking->check_in);
+            $end = $booking->check_out instanceof Carbon ? $booking->check_out : Carbon::parse($booking->check_out);
 
             return [
+                'booking_id' => $booking->booking_id,
                 'title' => $booking->agent->nama_agent,
-                'start' => $start->format('Y-m-d\TH:i:s'),
-                'end' => $end ? $end->format('Y-m-d\TH:i:s') : null,
+                'start' => $start->format('Y-m-d'),
+                'end' => $end ? $end->format('Y-m-d') : null,
+                'status' => $booking->status,
                 'backgroundColor' => $this->getStatusColor($booking->status),
                 'borderColor' => $this->getStatusColor($booking->status),
                 'textColor' => '#fff'
