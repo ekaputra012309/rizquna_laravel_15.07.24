@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-booking-status', [BookingController::class, 'updateStatus'])->name('update.booking.status');
     Route::post('/update-visa-status', [VisaController::class, 'updateStatus'])->name('update.visa.status');
     Route::get('/cetak-rizquna', [PaymentDetailController::class, 'cetakRizquna'])->name('cetak.rizquna');
+    Route::get('/cetak-alrayah', [PaymentDetailController::class, 'cetakAlrayah'])->name('cetak.alrayah');
     Route::get('/cetak-visa', [VisaDetailController::class, 'cetakVisa'])->name('cetak.visa');
     Route::get('/agents-report', [AgentController::class, 'filterReport'])->name('agents.report');
     Route::get('/agents-report-index', [AgentController::class, 'reportAgent'])->name('agents.report.index');

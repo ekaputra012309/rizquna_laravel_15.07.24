@@ -163,6 +163,17 @@ class PaymentDetailController extends Controller
             'totalIdr' => $totalIdr,
         );
         $pdf = FacadePdf::loadView('backend.payment.cetakrizquna', $data);
+        return $pdf->stream('Invoice-' . $booking->booking_id . '.pdf');
+    }
+
+    public function cetakAlrayah(Request $request)
+    {
+
+        $data = array(
+            'title' => 'Invoice | ',
+        );
+        $pdf = FacadePdf::loadView('backend.payment.cetakalrayah', $data)
+            ->setPaper('legal', 'portrait');
         return $pdf->stream('Invoice-.pdf');
     }
 }

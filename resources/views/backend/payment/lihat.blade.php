@@ -34,9 +34,12 @@
                                             <option value="BSI">BSI</option>
                                         </select> &nbsp;
                                         <button type="submit" class="btn btn-danger" style="min-width: 100px;">
-                                            <i class="bi bi-printer"></i> Cetak
-                                        </button>
+                                            <i class="fas fa-print"></i> Cetak
+                                        </button> &nbsp;
                                     </form>
+                                    <a href="{{route('cetak.alrayah')}}" class="btn btn-info" style="min-width: 100px;">
+                                        <i class="far fa-file-powerpoint"></i> Cetak
+                                    </a>
                                 </div>
                                 <div class="col-md-6 d-flex justify-content-end">
                                     <button type="button" class="btn btn-primary button-bayar" data-toggle="modal" data-target="#detailPembayaranModal">
