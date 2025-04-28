@@ -10,7 +10,7 @@ class Privilage extends Model
 {
     use HasFactory;
     protected $table = 'privilages';
-    protected $fillable = ['role_id', 'user_id'];
+    protected $fillable = ['role_id', 'user_id', 'cabang_id'];
 
     public function user()
     {
@@ -20,6 +20,11 @@ class Privilage extends Model
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function cabang()
+    {
+        return $this->belongsTo(Cabang::class, 'cabang_id');
     }
 
     public static function getRoleNameForAuthenticatedUser()

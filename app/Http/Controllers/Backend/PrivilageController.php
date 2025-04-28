@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Privilage;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Cabang;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -14,7 +15,7 @@ class PrivilageController extends Controller
 {
     public function index()
     {
-        $privilage = Privilage::with('user', 'role')
+        $privilage = Privilage::with('user', 'role', 'cabang')
             ->where('role_id', '!=', 1)
             ->get();
         $data = array(
@@ -29,7 +30,7 @@ class PrivilageController extends Controller
 
     public function show($id)
     {
-        $privilageItem = Privilage::with('user', 'role')->findOrFail($id);
+        $privilageItem = Privilage::with('user', 'role', 'cabang')->findOrFail($id);
         return response()->json($privilageItem);
     }
 
@@ -41,11 +42,13 @@ class PrivilageController extends Controller
             ->whereNotIn('id', $excludedUserIds)
             ->get();
         $role = Role::where('kode_role', '!=', 'superadmin')->get();
+        $cabang = Cabang::all();
 
         $data = array(
             'title' => 'Add Privilage | ',
             'datauser' => $user,
             'datarole' => $role,
+            'datacabang' => $cabang,
         );
         return view('backend.privilage.create', $data);
     }
@@ -63,11 +66,13 @@ class PrivilageController extends Controller
     {
         $user = User::where('id', '!=', 1)->get();
         $role = Role::where('kode_role', '!=', 'superadmin')->get();
+        $cabang = Cabang::all();
         $data = array(
             'title' => 'Edit Privilage | ',
             'privilage' => $privilage,
             'datauser' => $user,
             'datarole' => $role,
+            'datacabang' => $cabang,
         );
         return view('backend.privilage.edit', $data);
     }

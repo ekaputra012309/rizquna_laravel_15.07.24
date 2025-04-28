@@ -41,6 +41,7 @@
                                         <th>Nama User</th>
                                         <th>Email</th>
                                         <th>Role</th>
+                                        <th>Cabang</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,6 +58,7 @@
                                         <td>{{ $privilage->user->name }}</td>
                                         <td>{{ $privilage->user->email }}</td>
                                         <td>{{ $privilage->role->nama_role }}</td>
+                                        <td>{{ $privilage->cabang->nama_cabang ?? '' }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>

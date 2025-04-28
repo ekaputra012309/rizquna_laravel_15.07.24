@@ -36,7 +36,7 @@
 
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-8 col-12">
+                                    <div class="col-md-6 col-12">
                                         <div class="form-group mandatory">
                                             <label for="nama-user-column" class="form-label">Nama User</label>
                                             <select name="user_id" id="user_id" class="form-control select2bs4">
@@ -47,13 +47,24 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 col-12">
+                                    <div class="col-md-3 col-12">
                                         <div class="form-group mandatory">
                                             <label for="role-id-column" class="form-label">Role</label>
                                             <select name="role_id" id="role_id" class="form-control select2bs4">
                                                 <option value="">Pilih</option>
                                                 @foreach ($datarole as $rl)
                                                 <option value="{{ $rl->id }}" {{ $rl->id == $privilage->role_id ? 'selected' : '' }}>{{ $rl->nama_role }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group mandatory">
+                                            <label for="cabang-id-column" class="form-label">Cabang</label>
+                                            <select name="cabang_id" id="cabang_id" class="form-control select2bs4">
+                                                <option value="">Pilih</option>
+                                                @foreach ($datacabang as $rl)
+                                                <option value="{{ $rl->id }}" {{ $rl->id == $privilage->cabang_id ? 'selected' : '' }}>{{ $rl->nama_cabang }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
