@@ -13,6 +13,11 @@ class Role extends Model
     protected $fillable = [
         'kode_role',
         'nama_role',
-        // Add other columns as needed
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

@@ -1,61 +1,83 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Role;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class RoleController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-
     public function index()
     {
-        $roles = Role::all();
-        return response()->json($roles);
+        $role = Role::all();
+        $data = array(
+            'title' => 'Role | ',
+            'datarole' => $role,
+        );
+        $title = 'Delete role!';
+        $text = "Are you sure you want to delete?";
+        confirmDelete($title, $text);
+        return view('backend.role.index', $data);
     }
 
-    public function show($id)
+    public function create()
     {
-        try {
-            $role = Role::find($id);
-            return response()->json($role);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Role not found'], 404);
-        }
+        $data = array(
+            'title' => 'Add Role | ',
+        );
+        return view('backend.role.create', $data);
     }
 
     public function store(Request $request)
     {
-        $role = Role::create($request->all());
+        $request->validate([
+            'kode_role' => 'required|string|max:255',
+            'nama_role' => 'required|string|max:255',
+        ]);
 
-        return response()->json($role, 201);
+        Role::create($request->all());
+        Alert::success('Success', 'role created successfully.');
+
+        return redirect()->route('role.index');
     }
 
-    public function update(Request $request, $id)
+    public function show(Role $role)
     {
-        try {
-            $role = Role::findOrFail($id);
-            $role->update($request->all());
-            return response()->json($role, 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Role not found'], 404);
-        }
+        $data = array(
+            'title' => 'View Role | ',
+        );
+        return view('backend.role.show', $data);
     }
 
-    public function destroy($id)
+    public function edit(Role $role)
     {
-        try {
-            $role = Role::findOrFail($id);
-            $role->delete();
-            return response()->json(null, 204);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Role Not Found'], 404);
-        }
+        $data = array(
+            'title' => 'Edit Role | ',
+            'role' => $role,
+        );
+        return view('backend.role.edit', $data);
+    }
+
+    public function update(Request $request, Role $role)
+    {
+        $request->validate([
+            'kode_role' => 'required|string|max:255',
+            'nama_role' => 'required|string|max:255',
+        ]);
+
+        $role->update($request->all());
+        Alert::success('Success', 'role updated successfully.');
+
+        return redirect()->route('roles.index');
+    }
+
+    public function destroy(Role $role)
+    {
+        $role->delete();
+        Alert::success('Success', 'role deleted successfully.');
+
+        return redirect()->route('roles.index');
     }
 }
