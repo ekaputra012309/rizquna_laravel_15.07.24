@@ -20,4 +20,14 @@ class Cabang extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function jamaah()
+    {
+        return $this->hasMany(Jamaah::class, 'cabang_id');
+    }
+
+    public function cabangRoles()
+    {
+        return $this->hasMany(\App\Models\Privilage::class, 'cabang_id');
+    }
 }

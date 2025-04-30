@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cabang;
+use App\Models\Jamaah;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CabangController extends Controller
@@ -81,5 +82,27 @@ class CabangController extends Controller
         Alert::success('Success', 'cabang deleted successfully.');
 
         return redirect()->route('cabang.index');
+    }
+
+    public function bcabang(Request $request)
+    {
+        $cabangId = $request->input('cabang');
+        $cabang = Cabang::find($cabangId);
+        $cabangs = $cabangId
+            ? Cabang::where('id', $cabangId)->withCount('jamaah')->with('jamaah','jamaah.agent','cabangRoles')->get()
+            : Cabang::withCount('jamaah')->with('cabangRoles')->get();
+
+        $cabangsWithColors = $cabangs->map(function ($cabang) {
+            $cabang->randomColor = sprintf('#%06X', mt_rand(0, 0xFFFFFF));  // Random color
+            return $cabang;
+        });
+        $data = array(
+            'title' => $cabang ? $cabang->nama_cabang . ' | ' : 'B2C |',
+            'datacabang' => $cabangsWithColors,
+            'cabangId' => $cabangId,
+            'namacabang' => $cabang->nama_cabang ?? '',
+        );
+        // dd($data['datacabang']);
+        return view($cabangId ? 'backend.cabang.b2cabang' : 'backend.cabang.b2c', $data);
     }
 }

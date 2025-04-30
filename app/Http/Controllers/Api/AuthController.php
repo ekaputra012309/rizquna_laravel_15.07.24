@@ -66,4 +66,11 @@ class AuthController extends BaseController
 
         return $this->sendResponse([], 'User logged out successfully.');
     }
+
+    public function userProfile()
+    {
+        // return response()->json(auth()->user());
+        $user = auth()->user()->load('privilage');
+        return response()->json($user);
+    }
 }
