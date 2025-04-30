@@ -17,6 +17,11 @@ use App\Http\Controllers\Backend\VisaController;
 use App\Http\Controllers\Backend\VisaDetailController;
 use Illuminate\Support\Facades\Route;
 
+// 28-4-2025
+use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\CabangController;
+use App\Http\Controllers\Backend\PaketController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -59,6 +64,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('visadetail', VisaDetailController::class); //visa detail
     Route::resource('kurs', KursVisaController::class); //visa
 
+    // 28-4-2025
+    Route::resource('roles', RoleController::class); //roles
+    Route::resource('cabang', CabangController::class); //cabang
+    Route::resource('paket', PaketController::class); //paket
+
     Route::post('/update-booking-status', [BookingController::class, 'updateStatus'])->name('update.booking.status');
     Route::post('/update-visa-status', [VisaController::class, 'updateStatus'])->name('update.visa.status');
     Route::get('/cetak-rizquna', [PaymentDetailController::class, 'cetakRizquna'])->name('cetak.rizquna');
@@ -67,6 +77,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/agents-report', [AgentController::class, 'filterReport'])->name('agents.report');
     Route::get('/agents-report-index', [AgentController::class, 'reportAgent'])->name('agents.report.index');
     Route::get('/agents-exports', [AgentController::class, 'export'])->name('agents.export');
+
+    // 30-4-2025
+    Route::get('bcabang', [CabangController::class, 'bcabang'])->name('bcabang');
 
     Route::get('/user/{id}/reset-password', [UserController::class, 'resetPassword'])->name('user.resetPassword');
     Route::get('/events', [BookingController::class, 'getEvents'])->name('events');

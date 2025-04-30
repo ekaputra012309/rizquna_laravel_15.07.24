@@ -26,7 +26,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">
+                            <div class="card-title d-none">
                                 <a href="{{ route('agents.export.excel') }}" class="btn btn-success btn-sm">
                                     <i class="fas fa-file-excel"></i> Export Excel
                                 </a>

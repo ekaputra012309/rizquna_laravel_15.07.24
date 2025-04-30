@@ -89,14 +89,16 @@
 
         <footer class="main-footer">
             <div class="float-right d-none d-sm-block">
-                <b>Version</b> 1.1.0
+                <b>Version</b> 1.2.0
             </div>
-            <strong>Copyright &copy; {{ date('Y') >= 2024 ? '2024' : '2024-' . date('Y') }}
+            <strong>
+                &copy;
+                {{ date('Y') == 2024 ? '2024' : '2024-' . date('Y') }}
                 {{ config('app.name') }}
             </strong>
-            All rights
-            reserved.
+            All rights reserved.
         </footer>
+
 
         <aside class="control-sidebar control-sidebar-dark">
         </aside>

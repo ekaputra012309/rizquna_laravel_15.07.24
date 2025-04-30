@@ -17,16 +17,14 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-                @if (in_array($role, ['superadmin', 'admin', 'marketing', 'finance', 'visa']))
                 <li class="nav-item">
                     <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
-                @endif
 
-                @if (in_array($role, ['superadmin', 'admin']))
+                @if (isset($role) && in_array($role, ['superadmin', 'admin']))
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-layer-group"></i>
@@ -53,15 +51,20 @@
                                 <p>Rekening</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('paket.index') }}" class="nav-link {{ request()->routeIs('paket.index') ? 'active' : '' }}">
+                                <p>Paket</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 @endif
 
-                @if (in_array($role, ['superadmin', 'admin', 'marketing', 'finance', 'visa']))
+                @if (isset($role) && in_array($role, ['superadmin', 'admin', 'marketing', 'finance', 'visa', 'cabang']))
                 <li class="nav-header">Transaction</li>
                 @endif
 
-                @if (in_array($role, ['superadmin', 'admin', 'marketing']))
+                @if (isset($role) && in_array($role, ['superadmin', 'admin', 'marketing']))
                 <li class="nav-item">
                     <a href="{{ route('booking.index') }}" class="nav-link {{ request()->routeIs('booking.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-hotel"></i>
@@ -69,7 +72,7 @@
                     </a>
                 </li>
                 @endif
-                @if (in_array($role, ['superadmin', 'admin', 'finance']))
+                @if (isset($role) && in_array($role, ['superadmin', 'admin', 'finance']))
                 <li class="nav-item">
                     <a href="{{ route('payment.index') }}" class="nav-link {{ request()->routeIs('payment.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-credit-card"></i>
@@ -77,7 +80,7 @@
                     </a>
                 </li>
                 @endif
-                @if (in_array($role, ['superadmin', 'admin', 'visa', 'finance']))
+                @if (isset($role) && in_array($role, ['superadmin', 'admin', 'visa', 'finance']))
                 <li class="nav-item">
                     <a href="{{ route('visa.index') }}" class="nav-link {{ request()->routeIs('visa.index') ? 'active' : '' }}">
                         <i class="nav-icon fab fa-cc-visa"></i>
@@ -86,11 +89,20 @@
                 </li>
                 @endif
 
-                @if (in_array($role, ['superadmin', 'admin', 'marketing', 'finance']))
+                @if (isset($role) && in_array($role, ['superadmin', 'admin', 'cabang']))
+                <li class="nav-item">
+                    <a href="{{ route('bcabang') }}" class="nav-link {{ request()->routeIs('bcabang') ? 'active' : '' }}">
+                    &nbsp; <i class="fas fa-project-diagram"></i> &nbsp;
+                        <p>Data B2C</p>
+                    </a>
+                </li>
+                @endif
+
+                @if (isset($role) && in_array($role, ['superadmin', 'admin', 'marketing', 'finance']))
                 <li class="nav-header">Report</li>
                 @endif
 
-                @if (in_array($role, ['superadmin', 'admin', 'marketing', 'finance']))
+                @if (isset($role) && in_array($role, ['superadmin', 'admin', 'marketing', 'finance']))
                 <li class="nav-item">
                     <a href="{{ route('agents.report.index') }}" class="nav-link {{ request()->routeIs('agents.report.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
@@ -99,11 +111,11 @@
                 </li>
                 @endif
 
-                @if (in_array($role, ['superadmin', 'admin']))
+                @if (isset($role) && in_array($role, ['superadmin', 'admin']))
                 <li class="nav-header">Settings</li>
                 @endif
 
-                @if (in_array($role, ['superadmin', 'admin']))
+                @if (isset($role) && in_array($role, ['superadmin', 'admin']))
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-cogs"></i>
@@ -115,6 +127,22 @@
                                 <p>Privilage</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('cabang.index') }}" class="nav-link {{ request()->routeIs('cabang.index') ? 'active' : '' }}">
+                                <p>Cabang</p>
+                            </a>
+                        </li>
+                        @endif
+
+                        @if (isset($role) && in_array($role, ['superadmin']))
+                        <li class="nav-item">
+                            <a href="{{ route('roles.index') }}" class="nav-link {{ request()->routeIs('roles.index') ? 'active' : '' }}">
+                                <p>Role</p>
+                            </a>
+                        </li>
+                        @endif
+
+                        @if (isset($role) && in_array($role, ['superadmin', 'admin']))
                         <li class="nav-item">
                             <a href="{{ route('user.index') }}" class="nav-link {{ request()->routeIs('user.index') ? 'active' : '' }}">
                                 <p>Manage User</p>
