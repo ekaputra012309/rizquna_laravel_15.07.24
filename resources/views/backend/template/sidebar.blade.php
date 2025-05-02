@@ -60,7 +60,7 @@
                 </li>
                 @endif
 
-                @if (isset($role) && in_array($role, ['superadmin', 'admin', 'marketing', 'finance', 'visa', 'cabang']))
+                @if (isset($role) && in_array($role, ['superadmin', 'admin', 'marketing', 'finance', 'visa', 'cabang', 'finance_cabang']))
                 <li class="nav-header">Transaction</li>
                 @endif
 
@@ -89,7 +89,7 @@
                 </li>
                 @endif
 
-                @if (isset($role) && in_array($role, ['superadmin', 'admin', 'cabang']))
+                @if (isset($role) && in_array($role, ['superadmin', 'admin', 'cabang', 'finance_cabang']))
                 <li class="nav-item">
                     <a href="{{ route('bcabang') }}" class="nav-link {{ request()->routeIs('bcabang') ? 'active' : '' }}">
                     &nbsp; <i class="fas fa-project-diagram"></i> &nbsp;

@@ -27,7 +27,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Edit Cabang</h3>
                         </div>
-                        <form action="{{ route('cabang.update', $cabang->id_cabang) }}" method="POST">
+                        <form action="{{ route('cabang.update', $cabang->id) }}" method="POST">
                             @csrf
                             @method('PUT') <!-- Use PUT method for updates -->
                             @auth

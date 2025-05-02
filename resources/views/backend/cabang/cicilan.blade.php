@@ -2,8 +2,9 @@
 
 @section('content')
 
-@php
-    use Carbon\Carbon;
+@php 
+    $userRole = \App\Models\Privilage::getRoleKodeForAuthenticatedUser();
+    use Carbon\Carbon; 
 @endphp
 
 <div class="content-wrapper">
@@ -71,7 +72,7 @@
                         </div>
                         <div class="card-body">
                             @if($datajamaah->paket)
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-responsive">
                                     <!-- <tr>
                                         <th>Kode Paket</th>
                                         <td>{{ $datajamaah->paket->kode_paket }}</td>
@@ -175,10 +176,11 @@
                                                 {{ !$isOwner ? 'onclick=return false;' : 'data-confirm-delete=true' }}>
                                                 <i class="fas fa-trash"></i> Delete
                                             </a>
-
+                                            @if ($userRole !== 'cabang')
                                             <button class="btn btn-sm btn-secondary" data-id="{{ $cicilan->id }}" onclick="kwitansiBtn(this)">
                                                 <i class="fas fa-print"></i> Kwitansi
                                             </button>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach

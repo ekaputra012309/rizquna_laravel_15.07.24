@@ -1,7 +1,10 @@
 @extends('backend/template/app')
 
 @section('content')
-@php use Carbon\Carbon; @endphp
+@php 
+    $userRole = \App\Models\Privilage::getRoleKodeForAuthenticatedUser();
+    use Carbon\Carbon; 
+@endphp
 
 <div class="content-wrapper">
     <section class="content-header">
@@ -156,6 +159,7 @@
                                         <th>DP</th>
                                         <th>Tgl Keberangkatan</th>
                                         <th>Agent</th>
+                                        <th>Created by</th>
                                         <th>Actions &nbsp; &nbsp;</th>
                                     </tr>
                                 </thead>
@@ -177,6 +181,7 @@
                                             }}
                                         </td>
                                         <td>{{ $jamaah->agent->nama_agent ?? '-' }}</td>
+                                        <td>{{ $jamaah->user->name ?? '-' }}</td>
                                         <td>
                                             <a class="btn btn-sm btn-success" href="{{ route('jamaah.show', $jamaah->id) }}">
                                                 <i class="fas fa-search"></i> Detail
@@ -184,15 +189,20 @@
                                             <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-edit" data-id="{{ $jamaah->id }}">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
+                                            @php
+                                                $canDelete = $isOwner || $userRole === 'admin';
+                                            @endphp
                                             <a 
-                                                href="{{ $isOwner ? route('jamaah.destroy', $jamaah->id) : '#' }}" 
-                                                class="btn btn-sm btn-danger {{ !$isOwner ? 'disabled-link' : '' }}" 
-                                                {{ !$isOwner ? 'onclick=return false;' : 'data-confirm-delete=true' }}>
+                                                href="{{ $canDelete ? route('jamaah.destroy', $jamaah->id) : '#' }}" 
+                                                class="btn btn-sm btn-danger {{ !$canDelete ? 'disabled-link' : '' }}" 
+                                                {{ !$canDelete ? 'onclick=return false;' : 'data-confirm-delete=true' }}>
                                                 <i class="fas fa-trash"></i> Delete
                                             </a>
+                                            @if ($userRole !== 'cabang')
                                             <button class="btn btn-sm btn-secondary" data-id="{{ $jamaah->id }}" onclick="kwitansiBtn(this)">
                                                 <i class="fas fa-print"></i> Kwitansi
                                             </button>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach
