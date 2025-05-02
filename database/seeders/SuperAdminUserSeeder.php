@@ -17,7 +17,7 @@ class SuperAdminUserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => 'Super Admin',
-                'email' => 'admin123@gmail.com',
+                'email' => 'putra940616@gmail.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('admindemo'),
                 'created_at' => now(),
@@ -25,31 +25,7 @@ class SuperAdminUserSeeder extends Seeder
             ],
             [
                 'name' => 'Admin Rizquna',
-                'email' => 'admin@gmail.com',
-                'email_verified_at' => now(),
-                'password' => Hash::make('admindemo'),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Finance',
-                'email' => 'finance@gmail.com',
-                'email_verified_at' => now(),
-                'password' => Hash::make('12345678'),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Marketing',
-                'email' => 'marketing@gmail.com',
-                'email_verified_at' => now(),
-                'password' => Hash::make('12345678'),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Visa',
-                'email' => 'visa@gmail.com',
+                'email' => 'rizqunamekkahmadinahjkt@gmail.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('12345678'),
                 'created_at' => now(),

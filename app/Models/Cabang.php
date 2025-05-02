@@ -30,4 +30,17 @@ class Cabang extends Model
     {
         return $this->hasMany(\App\Models\Privilage::class, 'cabang_id');
     }
+
+    public static function getCabangsForAuthenticatedUser()
+    {
+        $privilage = \App\Models\Privilage::where('user_id', \Auth::id())->first();
+
+        if ($privilage && $privilage->cabang_id) {
+            return self::withCount('jamaah')->with('cabangRoles')
+                ->where('id', $privilage->cabang_id)
+                ->get();
+        }
+
+        return self::withCount('jamaah')->with('cabangRoles')->get();
+    }
 }

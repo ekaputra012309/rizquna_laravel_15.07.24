@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\CabangController;
 use App\Http\Controllers\Backend\PaketController;
+// 02-5-2025
+use App\Http\Controllers\Backend\JamaahController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +70,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('roles', RoleController::class); //roles
     Route::resource('cabang', CabangController::class); //cabang
     Route::resource('paket', PaketController::class); //paket
+    // 02-5-2025
+    Route::resource('jamaah', JamaahController::class); //jamaah
 
     Route::post('/update-booking-status', [BookingController::class, 'updateStatus'])->name('update.booking.status');
     Route::post('/update-visa-status', [VisaController::class, 'updateStatus'])->name('update.visa.status');
@@ -80,6 +84,11 @@ Route::middleware('auth')->group(function () {
 
     // 30-4-2025
     Route::get('bcabang', [CabangController::class, 'bcabang'])->name('bcabang');
+    // 02-5-2025
+    Route::get('kwitansi/cetak/{id}', [CabangController::class, 'cetakkwitansi'])->name('kwitansi.cetak');
+    Route::post('/cicilan/tambah', [JamaahController::class, 'tambah'])->name('cicilan.tambah');
+    Route::get('/cicilan/hapus/{id}', [JamaahController::class, 'hapus'])->name('cicilan.hapus');
+    Route::get('kwitansi/cetak2/{id}', [JamaahController::class, 'cetakkwitansi2'])->name('kwitansi.cetak2');
 
     Route::get('/user/{id}/reset-password', [UserController::class, 'resetPassword'])->name('user.resetPassword');
     Route::get('/events', [BookingController::class, 'getEvents'])->name('events');

@@ -77,6 +77,12 @@
         .input-subtotal {
             min-width: 140px;
         }
+
+        .disabled-link {
+            pointer-events: none;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 

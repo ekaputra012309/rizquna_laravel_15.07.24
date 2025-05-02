@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cabang;
 use App\Models\Jamaah;
+use App\Models\Agent;
+use App\Models\Paket;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CabangController extends Controller
@@ -89,20 +91,38 @@ class CabangController extends Controller
         $cabangId = $request->input('cabang');
         $cabang = Cabang::find($cabangId);
         $cabangs = $cabangId
-            ? Cabang::where('id', $cabangId)->withCount('jamaah')->with('jamaah','jamaah.agent','cabangRoles')->get()
-            : Cabang::withCount('jamaah')->with('cabangRoles')->get();
+            // ? Cabang::where('id', $cabangId)->withCount('jamaah')->with('jamaah','jamaah.agent','cabangRoles')->get()
+            ? Jamaah::where('cabang_id', $cabangId)->with('agent', 'cabang')->get()
+            // : Cabang::withCount('jamaah')->with('cabangRoles')->get();
+            : Cabang::getCabangsForAuthenticatedUser();
 
         $cabangsWithColors = $cabangs->map(function ($cabang) {
             $cabang->randomColor = sprintf('#%06X', mt_rand(0, 0xFFFFFF));  // Random color
             return $cabang;
         });
+        $title = 'Delete Jamaah!';
+        $text = "Are you sure you want to delete?";
+        confirmDelete($title, $text);
         $data = array(
             'title' => $cabang ? $cabang->nama_cabang . ' | ' : 'B2C |',
             'datacabang' => $cabangsWithColors,
             'cabangId' => $cabangId,
             'namacabang' => $cabang->nama_cabang ?? '',
+            'dataagent' => Agent::all(),
+            'datapaket' => Paket::all(),
         );
         // dd($data['datacabang']);
         return view($cabangId ? 'backend.cabang.b2cabang' : 'backend.cabang.b2c', $data);
+    }
+
+    public function cetakKwitansi($id)
+    {     
+        $pageTitle = 'Kwitansi ';
+        $detail = Jamaah::where('id', $id)->first();
+        return view('backend.cabang.cetak', [
+            'pageTitle' => $pageTitle,
+            'idpage' => $id,
+            'jamaah' => $detail,
+        ]);
     }
 }
