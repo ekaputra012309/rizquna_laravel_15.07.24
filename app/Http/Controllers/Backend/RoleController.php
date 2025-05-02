@@ -40,7 +40,7 @@ class RoleController extends Controller
         Role::create($request->all());
         Alert::success('Success', 'role created successfully.');
 
-        return redirect()->route('role.index');
+        return redirect()->route('roles.index');
     }
 
     public function show(Role $role)

@@ -32,7 +32,7 @@ class CreateJamaahTable extends Migration
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->foreign('cabang_id')->references('id')->on('cabang');
-            $table->foreign('agent_id')->references('id_agent')->on('agents');
+            // $table->foreign('agent_id')->references('id_agent')->on('agents');
             $table->foreign('paket_id')->references('id')->on('paket');
         });
 

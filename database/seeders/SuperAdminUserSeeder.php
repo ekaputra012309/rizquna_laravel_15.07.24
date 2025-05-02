@@ -39,6 +39,7 @@ class SuperAdminUserSeeder extends Seeder
             ['kode_role' => 'marketing', 'nama_role' => 'Marketing', 'user_id' => 1],
             ['kode_role' => 'finance', 'nama_role' => 'Finance', 'user_id' => 1],
             ['kode_role' => 'visa', 'nama_role' => 'Visa', 'user_id' => 1],
+            ['kode_role' => 'cabang', 'nama_role' => 'Admin Cabang', 'user_id' => 1],
         ]);
 
         DB::table('cabang')->insert([
