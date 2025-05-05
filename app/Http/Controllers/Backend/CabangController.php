@@ -92,7 +92,7 @@ class CabangController extends Controller
         $cabang = Cabang::find($cabangId);
         $cabangs = $cabangId
             // ? Cabang::where('id', $cabangId)->withCount('jamaah')->with('jamaah','jamaah.agent','cabangRoles')->get()
-            ? Jamaah::where('cabang_id', $cabangId)->with('agent', 'cabang')->get()
+            ? Jamaah::where('cabang_id', $cabangId)->with('agent', 'cabang', 'updatebyuser')->get()
             // : Cabang::withCount('jamaah')->with('cabangRoles')->get();
             : Cabang::getCabangsForAuthenticatedUser();
 

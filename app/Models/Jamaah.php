@@ -21,9 +21,9 @@ class Jamaah extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function updateby()
+    public function updatebyuser()
     {
-        return $this->belongsTo(User::class, 'updateby', 'id');
+        return $this->belongsTo(User::class, 'updateby');
     }
 
     public function cabang()

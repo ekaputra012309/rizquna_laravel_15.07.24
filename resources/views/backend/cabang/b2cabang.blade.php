@@ -1,10 +1,7 @@
 @extends('backend/template/app')
 
 @section('content')
-@php 
-    $userRole = \App\Models\Privilage::getRoleKodeForAuthenticatedUser();
-    use Carbon\Carbon; 
-@endphp
+@php use Carbon\Carbon; @endphp
 
 <div class="content-wrapper">
     <section class="content-header">
@@ -76,7 +73,7 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group mandatory">
                                             <label for="passpor" class="form-label">No. Passport</label>
-                                            <input type="number" id="passpor" class="form-control" name="passpor" required placeholder="Nomor Passport">
+                                            <input type="text" id="passpor" class="form-control" name="passpor" required placeholder="Nomor Passport">
                                         </div>
                                     </div>
 
@@ -142,24 +139,25 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"> </h3>
-                            <div class="card-tools">
-                                <a href="{{ route('cabang.create') }}" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-plus"></i> Add Data
-                                </a>
-                            </div>
+                            <!--<div class="card-tools">-->
+                            <!--    <a href="{{ route('cabang.create') }}" class="btn btn-primary btn-sm">-->
+                            <!--        <i class="fas fa-plus"></i> Add Data-->
+                            <!--    </a>-->
+                            <!--</div>-->
                         </div>
                         <div class="card-body">
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
                                         <th>Nama Jamaah</th>
+                                        <th>No</th>
                                         <th>Alamat</th>
                                         <th>Phone</th>
                                         <th>DP</th>
                                         <th>Tgl Keberangkatan</th>
                                         <th>Agent</th>
                                         <th>Created by</th>
+                                        <th>Updated by</th>
                                         <th>Actions &nbsp; &nbsp;</th>
                                     </tr>
                                 </thead>
@@ -169,8 +167,8 @@
                                         $isOwner = $jamaah->user_id === Auth::id();
                                     @endphp
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $jamaah->nama }}</td>
+                                        <td>{{ $loop->iteration }}</td>                                        
                                         <td>{{ $jamaah->alamat }}</td>
                                         <td>{{ $jamaah->phone }}</td>
                                         <td>{{ $jamaah->dp ? 'Rp ' . number_format($jamaah->dp, 0, ',', '.') : '-' }}</td>
@@ -181,7 +179,20 @@
                                             }}
                                         </td>
                                         <td>{{ $jamaah->agent->nama_agent ?? '-' }}</td>
-                                        <td>{{ $jamaah->user->name ?? '-' }}</td>
+                                        <td>
+                                            {{ $jamaah->user->name ?? '-' }} &nbsp;
+                                            {{ $jamaah->created_at 
+                                                ? Carbon::parse($jamaah->created_at)->translatedFormat('d F Y H:i')  
+                                                : '-' 
+                                            }}
+                                        </td>
+                                        <td>
+                                            {{ $jamaah->updatebyuser->name ?? '-' }} &nbsp;
+                                            {{ $jamaah->updatetime 
+                                                ? Carbon::parse($jamaah->updatetime)->translatedFormat('d F Y H:i')  
+                                                : '-' 
+                                            }}
+                                        </td>
                                         <td>
                                             <a class="btn btn-sm btn-success" href="{{ route('jamaah.show', $jamaah->id) }}">
                                                 <i class="fas fa-search"></i> Detail
@@ -189,20 +200,15 @@
                                             <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-edit" data-id="{{ $jamaah->id }}">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
-                                            @php
-                                                $canDelete = $isOwner || $userRole === 'admin';
-                                            @endphp
                                             <a 
-                                                href="{{ $canDelete ? route('jamaah.destroy', $jamaah->id) : '#' }}" 
-                                                class="btn btn-sm btn-danger {{ !$canDelete ? 'disabled-link' : '' }}" 
-                                                {{ !$canDelete ? 'onclick=return false;' : 'data-confirm-delete=true' }}>
+                                                href="{{ $isOwner ? route('jamaah.destroy', $jamaah->id) : '#' }}" 
+                                                class="btn btn-sm btn-danger {{ !$isOwner ? 'disabled-link' : '' }}" 
+                                                {{ !$isOwner ? 'onclick=return false;' : 'data-confirm-delete=true' }}>
                                                 <i class="fas fa-trash"></i> Delete
                                             </a>
-                                            @if ($userRole !== 'cabang')
                                             <button class="btn btn-sm btn-secondary" data-id="{{ $jamaah->id }}" onclick="kwitansiBtn(this)">
                                                 <i class="fas fa-print"></i> Kwitansi
                                             </button>
-                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach
@@ -215,8 +221,18 @@
         </div>
     </section>
     <script>
+        $('.select2bs4').select2({
+            theme: 'bootstrap4', // applies Bootstrap 4 styling
+            width: '100%'        // optional: makes it full-width
+        });
+
         $("#example1").DataTable({
-            "responsive": true,
+            "scrollX": true,
+            scrollCollapse: true,
+            fixedColumns: {
+                leftColumns: 1 // fix the first column
+            },
+            "responsive": false,
             "lengthChange": true,
             "autoWidth": true,
             // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]

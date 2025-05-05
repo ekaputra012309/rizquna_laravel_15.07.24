@@ -37,6 +37,9 @@
     <script src="{{ asset('backend/js/datatables/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('backend/js/datatables/buttons.print.min.js') }}"></script>
     <script src="{{ asset('backend/js/datatables/buttons.colVis.min.js') }}"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css">
+    <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
+
     {{-- select2 css js --}}
     <link rel="stylesheet" href="{{ asset('backend/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/css/select2-bootstrap4.min.css') }}">
