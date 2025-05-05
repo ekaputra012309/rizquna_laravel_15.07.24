@@ -138,20 +138,26 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"> </h3>
-                            <!--<div class="card-tools">-->
-                            <!--    <a href="{{ route('cabang.create') }}" class="btn btn-primary btn-sm">-->
-                            <!--        <i class="fas fa-plus"></i> Add Data-->
-                            <!--    </a>-->
-                            <!--</div>-->
+                            <form action="">
+                                <div class="row align-items-end">
+                                    <div class="col-md-4">
+                                        <label for="tgl_filter" class="form-label">Filter Tanggal Keberangkatan </label>
+                                        <input type="date" id="tgl_filter" class="form-control" placeholder="Filter Tanggal Berangkat" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label d-block">&nbsp;</label> <!-- For spacing -->
+                                        <button type="submit" id="btnFilter" class="btn btn-success me-2">Filter</button>
+                                        <button type="reset" id="btnClear" class="btn btn-secondary">Clear</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <div class="card-body">
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                    <th>No</th>
+                                        <th>No</th>
                                         <th>Nama Jamaah</th>
-                                        
                                         <th>Alamat</th>
                                         <th>Phone</th>
                                         <th>DP</th>
@@ -168,9 +174,8 @@
                                         $isOwner = $jamaah->user_id === Auth::id();
                                     @endphp
                                     <tr>
-                                    <td>{{ $loop->iteration }}</td>  
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $jamaah->nama }}</td>
-                                                                              
                                         <td>{{ $jamaah->alamat }}</td>
                                         <td>{{ $jamaah->phone }}</td>
                                         <td>{{ $jamaah->dp ? 'Rp ' . number_format($jamaah->dp, 0, ',', '.') : '-' }}</td>
@@ -189,10 +194,10 @@
                                             }}
                                         </td>
                                         <td>
-                                            {{ $jamaah->updatebyuser->name ?? '-' }} &nbsp;
+                                            {{ $jamaah->updatebyuser->name ?? ' ' }} &nbsp;
                                             {{ $jamaah->updatetime 
                                                 ? Carbon::parse($jamaah->updatetime)->translatedFormat('d F Y H:i')  
-                                                : '-' 
+                                                : ' ' 
                                             }}
                                         </td>
                                         <td>
@@ -223,16 +228,11 @@
         </div>
     </section>
     <script>
-        $('.select2bs4').select2({
-            theme: 'bootstrap4', // applies Bootstrap 4 styling
-            width: '100%'        // optional: makes it full-width
-        });
-
         $("#example1").DataTable({
             "scrollX": true,
-            scrollCollapse: true,
-            fixedColumns: {
-                leftColumns: 2 // fix the first column
+            "scrollCollapse": true,
+            "fixedColumns": {
+                "leftColumns": 2 // fix the first column
             },
             "responsive": false,
             "lengthChange": true,
@@ -281,6 +281,23 @@
             editHref = editHref.replace(':id', jamaahId);
             window.open(editHref, '_blank');
         }
+        
+        $('#btnFilter').on('click', function (e) {
+            e.preventDefault(); // prevent the default form submission
+
+            const tglFilter = $('#tgl_filter').val();
+            const cabangId = $('#IDcabang').val();
+
+            const url = "{{ route('bcabang') }}" + "?cabang={{$cabangId}}" + "&tgl_berangkat=" + encodeURIComponent(tglFilter);
+
+            // Redirect to filtered URL
+            window.location.href = url;
+        });
+
+        $('#btnClear').on('click', function (e) {
+            const url = "{{ route('bcabang') }}" + "?cabang={{$cabangId}}";
+            window.location.href = url;
+        });
     </script>
 </div>
 @endsection

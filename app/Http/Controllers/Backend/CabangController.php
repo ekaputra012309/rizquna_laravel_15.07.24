@@ -10,6 +10,7 @@ use App\Models\Agent;
 use App\Models\Paket;
 use App\Models\Privilage;
 use RealRashid\SweetAlert\Facades\Alert;
+use Carbon\Carbon;
 
 class CabangController extends Controller
 {
@@ -90,12 +91,21 @@ class CabangController extends Controller
     public function bcabang(Request $request)
     {
         $cabangId = $request->input('cabang');
-        $cabang = Cabang::find($cabangId);
-        $cabangs = $cabangId
-            // ? Cabang::where('id', $cabangId)->withCount('jamaah')->with('jamaah','jamaah.agent','cabangRoles')->get()
-            ? Jamaah::where('cabang_id', $cabangId)->with('agent', 'cabang', 'updatebyuser')->get()
-            // : Cabang::withCount('jamaah')->with('cabangRoles')->get();
-            : Cabang::getCabangsForAuthenticatedUser();
+        $tgl_berangkat = $request->input('tgl_berangkat');
+        $cabang = $cabangId ? Cabang::find($cabangId) : null;
+
+        if ($cabangId) {
+            $query = Jamaah::where('cabang_id', $cabangId)
+                        ->with(['agent', 'cabang', 'updatebyuser']);
+    
+            if ($tgl_berangkat) {
+                $query->whereDate('tgl_berangkat', Carbon::parse($tgl_berangkat)->toDateString());
+            }
+    
+            $cabangs = $query->get();
+        } else {
+            $cabangs = Cabang::getCabangsForAuthenticatedUser();
+        }
 
         $cabangsWithColors = $cabangs->map(function ($cabang) {
             $cabang->randomColor = sprintf('#%06X', mt_rand(0, 0xFFFFFF));  // Random color
