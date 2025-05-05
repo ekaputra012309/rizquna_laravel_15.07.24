@@ -149,8 +149,9 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
+                                    <th>No</th>
                                         <th>Nama Jamaah</th>
-                                        <th>No</th>
+                                        
                                         <th>Alamat</th>
                                         <th>Phone</th>
                                         <th>DP</th>
@@ -167,8 +168,9 @@
                                         $isOwner = $jamaah->user_id === Auth::id();
                                     @endphp
                                     <tr>
+                                    <td>{{ $loop->iteration }}</td>  
                                         <td>{{ $jamaah->nama }}</td>
-                                        <td>{{ $loop->iteration }}</td>                                        
+                                                                              
                                         <td>{{ $jamaah->alamat }}</td>
                                         <td>{{ $jamaah->phone }}</td>
                                         <td>{{ $jamaah->dp ? 'Rp ' . number_format($jamaah->dp, 0, ',', '.') : '-' }}</td>
@@ -206,7 +208,7 @@
                                                 {{ !$isOwner ? 'onclick=return false;' : 'data-confirm-delete=true' }}>
                                                 <i class="fas fa-trash"></i> Delete
                                             </a>
-                                            <button class="btn btn-sm btn-secondary" data-id="{{ $jamaah->id }}" onclick="kwitansiBtn(this)">
+                                            <button class="btn btn-sm btn-secondary {{ $koderole == 'cabang' ? 'd-none' : '' }}" data-id="{{ $jamaah->id }}" onclick="kwitansiBtn(this)">
                                                 <i class="fas fa-print"></i> Kwitansi
                                             </button>
                                         </td>
@@ -230,7 +232,7 @@
             "scrollX": true,
             scrollCollapse: true,
             fixedColumns: {
-                leftColumns: 1 // fix the first column
+                leftColumns: 2 // fix the first column
             },
             "responsive": false,
             "lengthChange": true,

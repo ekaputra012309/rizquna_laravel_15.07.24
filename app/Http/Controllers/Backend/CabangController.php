@@ -8,6 +8,7 @@ use App\Models\Cabang;
 use App\Models\Jamaah;
 use App\Models\Agent;
 use App\Models\Paket;
+use App\Models\Privilage;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CabangController extends Controller
@@ -110,8 +111,9 @@ class CabangController extends Controller
             'namacabang' => $cabang->nama_cabang ?? '',
             'dataagent' => Agent::all(),
             'datapaket' => Paket::all(),
+            'koderole' => Privilage::getRoleKodeForAuthenticatedUser(),
         );
-        // dd($data['datacabang']);
+        // dd($data['koderole']);
         return view($cabangId ? 'backend.cabang.b2cabang' : 'backend.cabang.b2c', $data);
     }
 
