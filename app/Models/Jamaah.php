@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Jamaah extends Model
 {
@@ -44,5 +45,15 @@ class Jamaah extends Model
     public function cicilan()
     {
         return $this->hasMany(Cicilan::class, 'id_jamaah');
+    }
+
+    public static function isDuplicateNamaToday($nama, $excludeId = null)
+    {
+        return self::whereDate('created_at', Carbon::today())
+            ->when($excludeId, function ($query, $excludeId) {
+                $query->where('id', '!=', $excludeId);
+            })
+            ->where('nama', 'LIKE', '%' . $nama . '%')
+            ->exists();
     }
 }

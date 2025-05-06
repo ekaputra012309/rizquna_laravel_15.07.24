@@ -174,4 +174,10 @@ class JamaahController extends Controller
             'cicilan' => $detail,
         ]);
     }
+
+    public function checkDuplicateNama(Request $request)
+    {
+        $isDuplicate = Jamaah::isDuplicateNamaToday($request->nama, $request->id);
+        return response()->json(['duplicate' => $isDuplicate]);
+    }
 }

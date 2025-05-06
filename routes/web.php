@@ -89,6 +89,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/cicilan/tambah', [JamaahController::class, 'tambah'])->name('cicilan.tambah');
     Route::get('/cicilan/hapus/{id}', [JamaahController::class, 'hapus'])->name('cicilan.hapus');
     Route::get('kwitansi/cetak2/{id}', [JamaahController::class, 'cetakkwitansi2'])->name('kwitansi.cetak2');
+    // 06-5-2025
+    Route::get('/check-duplicate-nama', [JamaahController::class, 'checkDuplicateNama'])->name('jamaah.checkNama');
 
     Route::get('/user/{id}/reset-password', [UserController::class, 'resetPassword'])->name('user.resetPassword');
     Route::get('/events', [BookingController::class, 'getEvents'])->name('events');

@@ -50,6 +50,7 @@
                                         <div class="form-group mandatory">
                                             <label for="nama" class="form-label">Nama Lengkap</label>
                                             <input type="text" id="nama" class="form-control" name="nama" required placeholder="Nama Jamaah">
+                                            <small id="nama-error" class="text-danger d-none"></small>
                                         </div>
                                     </div>
 
@@ -298,6 +299,35 @@
             const url = "{{ route('bcabang') }}" + "?cabang={{$cabangId}}";
             window.location.href = url;
         });
+
+        $('#nama').on('blur', function () {
+            const nama = $(this).val();
+            const jamaahId = $('#jamaah_id').val() || ''; // use for update cases
+
+            if (nama.trim() === '') {
+                $('#nama-error').addClass('d-none').text('');
+                return;
+            }
+
+            $.ajax({
+                url: "{{ route('jamaah.checkNama') }}",
+                method: 'GET',
+                data: {
+                    nama: nama,
+                    id: jamaahId
+                },
+                success: function (res) {
+                    if (res.duplicate) {
+                        $('#nama-error').removeClass('d-none').text('Nama Jamaah serupa sudah terdaftar hari ini.');
+                        $('#form-submit-btn').prop('disabled', true);
+                    } else {
+                        $('#nama-error').addClass('d-none').text('');
+                        $('#form-submit-btn').prop('disabled', false);
+                    }
+                }
+            });
+        });
+
     </script>
 </div>
 @endsection
