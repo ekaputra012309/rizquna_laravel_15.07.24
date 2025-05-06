@@ -58,6 +58,7 @@
                                         </span>
                                     </div>
                                 </div>
+                                <small id="password-error" class="text-danger d-none"></small>
                             </div>
                             <div class="form-group">
                                 <label for="password_confirmation">Confirm Password</label>
@@ -85,7 +86,8 @@
 </section>
 <script>
     $(document).ready(function() {
-        $('#toggle-password').click(function() {
+        // Password visibility toggles (already present)
+        $('#toggle-password').click(function () {
             const passwordField = $('#password');
             const passwordIcon = $('#password-icon');
             const type = passwordField.attr('type') === 'password' ? 'text' : 'password';
@@ -93,7 +95,7 @@
             passwordIcon.toggleClass('fa-eye fa-eye-slash');
         });
 
-        $('#toggle-password-confirmation').click(function() {
+        $('#toggle-password-confirmation').click(function () {
             const passwordConfirmationField = $('#password_confirmation');
             const passwordIconConfirmation = $('#password-icon-confirmation');
             const type = passwordConfirmationField.attr('type') === 'password' ? 'text' : 'password';
@@ -101,9 +103,18 @@
             passwordIconConfirmation.toggleClass('fa-eye fa-eye-slash');
         });
 
-        $('#user-form').submit(function(event) {
+        // Validate password match and minimum length
+        $('#user-form').submit(function (event) {
             const password = $('#password').val();
             const passwordConfirmation = $('#password_confirmation').val();
+            let isValid = true;
+
+            if (password.length < 8) {
+                $('#password-error').removeClass('d-none').text('Password must be at least 8 characters.');
+                isValid = false;
+            } else {
+                $('#password-error').addClass('d-none').text('');
+            }
 
             if (password !== passwordConfirmation) {
                 event.preventDefault();
@@ -112,11 +123,20 @@
                     title: 'Error',
                     text: 'Password and Confirm Password do not match.'
                 });
+                isValid = false;
             }
+
+            if (!isValid) event.preventDefault();
         });
 
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
+        // Optional: live validation on password blur
+        $('#password').on('blur', function () {
+            const password = $(this).val();
+            if (password.length < 8) {
+                $('#password-error').removeClass('d-none').text('Password must be at least 8 characters.');
+            } else {
+                $('#password-error').addClass('d-none').text('');
+            }
         });
     });
 </script>
