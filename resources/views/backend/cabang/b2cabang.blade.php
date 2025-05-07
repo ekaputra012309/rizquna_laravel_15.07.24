@@ -38,7 +38,7 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group mandatory">
                                             <label for="nik" class="form-label">NIK</label>
-                                            <input type="number" id="nik" class="form-control" name="nik" required placeholder="Nomor Induk Kependudukan">
+                                            <input type="tel" id="nik" class="form-control" name="nik" maxlength="16" required placeholder="Nomor Induk Kependudukan" title="Masukkan 16 digit angka">
                                             @if(isset($jamaah))
                                                 <input type="hidden" name="jamaah_id" value="{{ $jamaah->id }}">
                                             @endif
@@ -113,8 +113,16 @@
                                             <label for="paket-id-column" class="form-label">Pilih Paket</label>
                                             <select name="paket_id" id="paket_id" class="form-control select2bs4" required>
                                                 <option value="">Pilih</option>
+                                                {{-- Show unavailable paket if editing and paket_id is not in the list --}}
+                                                @if(isset($jamaah) && $jamaah->paket_id && !$datapaket->contains('id', $jamaah->paket_id))
+                                                    <option value="{{ $jamaah->paket_id }}" selected>(Paket tidak tersedia)</option>
+                                                @endif
+
                                                 @foreach ($datapaket as $rl)
-                                                <option value="{{ $rl->id }}">{{ $rl->nama_paket }}</option>
+                                                    <option value="{{ $rl->id }}"
+                                                        {{ old('paket_id', isset($jamaah) ? $jamaah->paket_id : '') == $rl->id ? 'selected' : '' }}>
+                                                        {{ $rl->nama_paket }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
