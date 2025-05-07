@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Paket;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Database\QueryException;
 
 class PaketController extends Controller
 {
@@ -79,10 +80,27 @@ class PaketController extends Controller
         return redirect()->route('paket.index');
     }
 
+    // public function destroy(Paket $paket)
+    // {
+    //     $paket->delete();
+    //     Alert::success('Success', 'paket deleted successfully.');
+
+    //     return redirect()->route('paket.index');
+    // }
     public function destroy(Paket $paket)
     {
-        $paket->delete();
-        Alert::success('Success', 'paket deleted successfully.');
+        try {
+            $paket->delete();
+            Alert::success('Success', 'Paket deleted successfully.');
+        } catch (QueryException $e) {
+            // Check if it's a foreign key constraint violation
+            if ($e->getCode() === '23000') {
+                Alert::error('Gagal Menghapus', 'Paket tidak bisa dihapus karena sudah digunakan oleh data Jamaah.');
+            } else {
+                // Optional: log or handle other query errors
+                Alert::error('Error', 'Terjadi kesalahan saat menghapus paket.');
+            }
+        }
 
         return redirect()->route('paket.index');
     }
