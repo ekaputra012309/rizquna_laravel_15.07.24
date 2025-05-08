@@ -15,7 +15,7 @@ class CreateJamaahTable extends Migration
     {
         Schema::create('jamaah', function (Blueprint $table) {
             $table->id();
-            $table->integer('nik');
+            $table->string('nik', 16);
             $table->string('nama');
             $table->string('alamat');
             $table->text('phone');
