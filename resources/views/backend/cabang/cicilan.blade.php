@@ -119,6 +119,8 @@
                         <div class="card-header">
                             <h3 class="card-title">Rincian Cicilan</h3>
                             <div class="card-tools">
+                                <a href="{{ route('bcabang') }}?cabang={{ $datajamaah->cabang_id }}" class="btn btn-sm btn-secondary mb-1 mr-2"><i class="fas fa-arrow-left"></i> Back</a>
+
                                 <button 
                                     class="btn btn-primary btn-sm" 
                                     data-toggle="modal" 

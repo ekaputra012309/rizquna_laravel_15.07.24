@@ -38,6 +38,7 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group mandatory">
                                             <label for="nik" class="form-label">NIK</label>
+                                            <!--<input type="number" id="nik" class="form-control" name="nik" required placeholder="Nomor Induk Kependudukan">-->
                                             <input type="tel" id="nik" class="form-control" name="nik" maxlength="16" required placeholder="Nomor Induk Kependudukan" title="Masukkan 16 digit angka">
                                             @if(isset($jamaah))
                                                 <input type="hidden" name="jamaah_id" value="{{ $jamaah->id }}">
@@ -167,6 +168,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama Jamaah</th>
+                                        <th>Status</th>
                                         <th>Alamat</th>
                                         <th>Phone</th>
                                         <th>DP</th>
@@ -185,9 +187,21 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $jamaah->nama }}</td>
+                                       <td>
+                                            <span class="btn btn-xs 
+                                                @if ($jamaah->cicilan_status == 'Lunas')
+                                                    btn-success
+                                                @elseif ($jamaah->cicilan_status == 'Sudah DP')
+                                                    btn-warning
+                                                @else
+                                                    btn-danger
+                                                @endif">
+                                                {{ $jamaah->cicilan_status }}
+                                            </span>
+                                        </td>
                                         <td>{{ $jamaah->alamat }}</td>
                                         <td>{{ $jamaah->phone }}</td>
-                                        <td>{{ $jamaah->dp ? 'Rp ' . number_format($jamaah->dp, 0, ',', '.') : '-' }}</td>
+                                        <td>{{ $jamaah->dp ? 'Rp ' . number_format($jamaah->cicilan_status == 'Lunas' ? $jamaah->paket->harga_paket : $jamaah->dp, 0, ',', '.') : '-' }}</td>
                                         <td>
                                             {{ $jamaah->tgl_berangkat 
                                                 ? Carbon::parse($jamaah->tgl_berangkat)->translatedFormat('d F Y') 
@@ -213,7 +227,10 @@
                                             <a class="btn btn-sm btn-success" href="{{ route('jamaah.show', $jamaah->id) }}">
                                                 <i class="fas fa-search"></i> Detail
                                             </a>
-                                            <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-edit" data-id="{{ $jamaah->id }}">
+                                            <!-- <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-edit" data-id="{{ $jamaah->id }}">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a> -->
+                                            <a class="btn btn-sm btn-primary" href="{{ route('jamaah.edit', $jamaah->id) }}?cabang={{ $cabangId }}">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
                                             <a 
@@ -249,41 +266,6 @@
             // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
-        $(document).on('click', '.btn-edit', function () {
-            const id = $(this).data('id');
-            $.ajax({
-                url: `/jamaah/${id}/edit`,
-                method: 'GET',
-                success: function (response) {
-                    const data = response.data;
-                    $('#nik').val(data.nik);
-                    $('#nama').val(data.nama);
-                    $('#alamat').val(data.alamat);
-                    $('#phone').val(data.phone);
-                    $('#passpor').val(data.passpor);
-                    $('#dp').val(data.dp);
-                    $('#tgl_berangkat').val(data.tgl_berangkat);
-                    $('#agent_id').val(data.agent_id).trigger('change');
-                    $('#paket_id').val(data.paket_id).trigger('change');
-                    $('#status').val(data.status);
-                    $('#jamaah_id').val(data.id);
-
-                    $('#form-submit-btn').text('Update');
-                    
-                    if ($('#jamaah_id').length === 0) {
-                        $('<input>').attr({
-                            type: 'hidden',
-                            id: 'jamaah_id',
-                            name: 'jamaah_id',
-                            value: data.id
-                        }).appendTo('form');
-                    } else {
-                        $('#jamaah_id').val(data.id);
-                    }
-                }
-            });
-        });
-
         function kwitansiBtn(button){
             var jamaahId = $(button).data('id');                
             var editHref = "{{ route('kwitansi.cetak', ['id' => ':id']) }}";
@@ -307,7 +289,7 @@
             const url = "{{ route('bcabang') }}" + "?cabang={{$cabangId}}";
             window.location.href = url;
         });
-
+        
         $('#nama').on('blur', function () {
             const nama = $(this).val();
             const jamaahId = $('#jamaah_id').val() || ''; // use for update cases
@@ -335,7 +317,6 @@
                 }
             });
         });
-
     </script>
 </div>
 @endsection

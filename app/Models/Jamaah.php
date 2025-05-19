@@ -24,7 +24,7 @@ class Jamaah extends Model
 
     public function updatebyuser()
     {
-        return $this->belongsTo(User::class, 'updateby');
+        return $this->belongsTo(User::class, 'updateby', 'id');
     }
 
     public function cabang()
@@ -46,7 +46,7 @@ class Jamaah extends Model
     {
         return $this->hasMany(Cicilan::class, 'id_jamaah');
     }
-
+    
     public static function isDuplicateNamaToday($nama, $excludeId = null)
     {
         return self::whereDate('created_at', Carbon::today())

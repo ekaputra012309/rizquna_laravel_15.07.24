@@ -9,6 +9,7 @@ use App\Models\Jamaah;
 use App\Models\Agent;
 use App\Models\Paket;
 use App\Models\Privilage;
+use App\Models\Cicilan;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
 
@@ -96,7 +97,7 @@ class CabangController extends Controller
 
         if ($cabangId) {
             $query = Jamaah::where('cabang_id', $cabangId)
-                        ->with(['agent', 'cabang', 'updatebyuser']);
+                        ->with(['agent', 'cabang', 'updatebyuser', 'paket']);
     
             if ($tgl_berangkat) {
                 $query->whereDate('tgl_berangkat', Carbon::parse($tgl_berangkat)->toDateString());
@@ -107,10 +108,26 @@ class CabangController extends Controller
             $cabangs = Cabang::getCabangsForAuthenticatedUser();
         }
 
-        $cabangsWithColors = $cabangs->map(function ($cabang) {
-            $cabang->randomColor = sprintf('#%06X', mt_rand(0, 0xFFFFFF));  // Random color
-            return $cabang;
+        $cabangsWithColors = $cabangs->map(function ($jamaah) {
+            $jamaah->randomColor = sprintf('#%06X', mt_rand(0, 0xFFFFFF)); // Random color
+        
+            $totalCicilan = Cicilan::where('id_jamaah', $jamaah->id)->sum('deposit');
+            $dp = $jamaah->dp ?? 0;
+            $hargaPaket = $jamaah->paket->harga_paket ?? 0;
+            $sisaCicilan = $hargaPaket - ($dp + $totalCicilan);
+        
+            // Determine status based on cicilan logic
+            if ($sisaCicilan <= 0) {
+                $jamaah->cicilan_status = 'Lunas';
+            } elseif ($dp > 0) {
+                $jamaah->cicilan_status = 'Sudah DP';
+            } else {
+                $jamaah->cicilan_status = 'Tanpa DP';
+            }
+        
+            return $jamaah;
         });
+        
         $title = 'Delete Jamaah!';
         $text = "Are you sure you want to delete?";
         confirmDelete($title, $text);
@@ -123,7 +140,7 @@ class CabangController extends Controller
             'datapaket' => Paket::all(),
             'koderole' => Privilage::getRoleKodeForAuthenticatedUser(),
         );
-        // dd($data['koderole']);
+        // dd($data['datacabang']);
         return view($cabangId ? 'backend.cabang.b2cabang' : 'backend.cabang.b2c', $data);
     }
 
