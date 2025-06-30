@@ -31,18 +31,25 @@ class VisaController extends Controller
     public function create()
     {
         $currentYear = date('Y');
+        $romanMonths = [
+            1 => 'I', 2 => 'II', 3 => 'III', 4 => 'IV',
+            5 => 'V', 6 => 'VI', 7 => 'VII', 8 => 'VIII',
+            9 => 'IX', 10 => 'X', 11 => 'XI', 12 => 'XII'
+        ];
+        $currentMonth = (int)date('n');
+        $romanMonth = $romanMonths[$currentMonth];
 
         // Find the maximum ID from existing visas
         $maxId = Visa::max('visa_id');
 
         // Extract the numeric part and increment by 1
-        $numericPart = (int)explode('/', $maxId)[0]; // Extract "002" from "002/INV-HTL/II/2024"
+        $numericPart = (int)explode('/', $maxId)[0]; // Extract "002" from "002/INV-VISA/II/2024"
         $newNumericPart = $numericPart + 1;
 
         // Format the new ID to a 3-digit string
         $newId = str_pad($newNumericPart, 3, '0', STR_PAD_LEFT);
 
-        $autoId = $newId . '/INV-VISA/II/' . $currentYear;
+        $autoId = $newId . '/INV-VISA/' . $romanMonth . '/' . $currentYear;
         $agent = Agent::orderBy('nama_agent', 'asc')->get();
         $data = array(
             'title' => 'Add Visa | ',
