@@ -14,6 +14,7 @@ return [
     'show_warnings' => false,   // Throw an Exception on warnings from dompdf
 
     'public_path' => null,  // Override the public path if needed
+    // 'public_path' => realpath(base_path('../public_html')), - this path for hosting
 
     /*
      * Dejavu Sans font is missing glyphs for converted entities, turn it off if you need to show € and £.
