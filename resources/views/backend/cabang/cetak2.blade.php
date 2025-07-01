@@ -203,10 +203,11 @@
             <div class="horizontal-rule black"></div>
             <div class="horizontal-rule red"></div>
             <div class="footer-addresses">
-            <div style="width: 35%;">
+                <div style="width: 35%;">
                     <span style="font-size: 16pt"><strong>Makassar</strong></span><br>
                     Jl. Sirajuddin Rani No. 49 RT/RW 001/001<br>
-                    Kel. Bonto Bontoa, Kec. Tebet, Jakarta Selatan
+                    Kel. Bonto Bontoa, Kec. Somba Upu, Kab. Gowa <br>
+                    Sulawesi Selatan
                 </div>
                 <div style="width: 20%;">
                     <span style="font-size: 16pt"><strong>Balikpapan</strong></span><br>
