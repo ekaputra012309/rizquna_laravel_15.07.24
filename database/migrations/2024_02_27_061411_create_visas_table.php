@@ -22,7 +22,7 @@ class CreateVisasTable extends Migration
             $table->decimal('jumlah_pax', 10, 2);
             $table->decimal('harga_pax', 10, 2);
             $table->decimal('total', 10, 2);
-            $table->enum('status', ['Piutang', 'Lunas'])->default('Piutang');
+            $table->enum('status', ['Piutang', 'Lunas', 'DP'])->default('Piutang');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
