@@ -1,6 +1,7 @@
 <script>
     $(document).ready(function() {
-        $('.selectAgentBtn').on('click', function() {
+        // $('.selectAgentBtn').on('click', function() {
+        $('#agentTable').on('click', '.selectAgentBtn', function() {
             // Get agent details from the button's data attributes
             var agentId = $(this).data('agent-id');
             var agentName = $(this).data('agent-name');
