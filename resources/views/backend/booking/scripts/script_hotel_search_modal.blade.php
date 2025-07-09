@@ -1,6 +1,7 @@
 <script>
     $(document).ready(function() {
-        $('.selectHotelBtn').on('click', function() {
+        // $('.selectHotelBtn').on('click', function() {
+        $('#hotelTable').on('click', '.selectHotelBtn', function() {
             // Get hotel details from the button's data attributes
             var hotelId = $(this).data('hotel-id');
             var hotelName = $(this).data('hotel-name');
